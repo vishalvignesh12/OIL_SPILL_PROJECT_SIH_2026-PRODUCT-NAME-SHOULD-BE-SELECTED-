@@ -86,8 +86,8 @@ export default function DetectionRegistryView() {
       header: 'Detection ID',
       key: 'id',
       width: '130px',
-      render: (val, row) => (
-        <span className="font-mono font-bold text-primary hover:underline cursor-pointer">
+      render: (val) => (
+        <span className="font-mono font-bold text-primary hover:underline cursor-pointer whitespace-nowrap">
           {val}
         </span>
       )
@@ -95,15 +95,15 @@ export default function DetectionRegistryView() {
     {
       header: 'Timestamp (UTC)',
       key: 'timestamp',
-      width: '160px',
-      render: (val) => <span className="font-mono text-on-surface-variant text-[12px]">{val}</span>
+      width: '150px',
+      render: (val) => <span className="font-mono text-on-surface-variant text-[12px] whitespace-nowrap">{val}</span>
     },
     {
       header: 'Region & Coordinates',
       key: 'region',
       render: (val, row) => (
         <div>
-          <strong className="text-primary block text-label-md">{val}</strong>
+          <strong className="text-primary block text-label-md leading-tight">{val}</strong>
           <span className="text-[11px] font-mono text-on-surface-variant">{row.coordinates}</span>
         </div>
       )
@@ -112,23 +112,23 @@ export default function DetectionRegistryView() {
       header: 'Sensor / Source',
       key: 'sensor',
       render: (val) => (
-        <span className="inline-flex items-center gap-1 text-[12px] font-medium text-on-surface">
+        <span className="inline-flex items-center gap-1.5 text-[12px] font-medium text-on-surface whitespace-nowrap">
           <span className="material-symbols-outlined text-[15px] text-secondary">satellite_alt</span>
           {val}
         </span>
       )
     },
     {
-      header: 'Area (km²)',
+      header: 'Area',
       key: 'areaKm2',
-      render: (val) => <strong className="text-primary font-mono">{val} km²</strong>
+      render: (val) => <strong className="text-primary font-mono whitespace-nowrap">{val} km²</strong>
     },
     {
       header: 'Confidence',
       key: 'confidence',
       render: (val) => (
-        <div className="flex items-center gap-2">
-          <div className="w-16 bg-surface-container-high rounded-full h-1.5 overflow-hidden">
+        <div className="flex items-center gap-2 whitespace-nowrap">
+          <div className="w-14 bg-surface-container-high rounded-full h-1.5 overflow-hidden">
             <div
               className={`h-full rounded-full ${val >= 90 ? 'bg-secondary' : val >= 70 ? 'bg-tertiary-container' : 'bg-outline'}`}
               style={{ width: `${val}%` }}
@@ -148,7 +148,7 @@ export default function DetectionRegistryView() {
       key: 'suspectVessel',
       render: (val, row) => (
         <div>
-          <span className="text-label-md font-semibold text-primary block">{val}</span>
+          <span className="text-label-md font-semibold text-primary block leading-tight">{val}</span>
           <span className="text-[11px] text-on-surface-variant">{row.status}</span>
         </div>
       )
@@ -157,7 +157,7 @@ export default function DetectionRegistryView() {
       header: 'Actions',
       key: 'actions',
       sortable: false,
-      width: '180px',
+      width: '160px',
       render: (_, row) => (
         <div className="flex items-center gap-1.5">
           <Button
@@ -191,21 +191,22 @@ export default function DetectionRegistryView() {
 
   return (
     <div className="flex flex-col gap-6 animate-in fade-in duration-150">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      {/* Page Title & Main Action Buttons */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-headline-lg font-bold text-primary tracking-tight">
             Oil Spill Detection Registry
           </h1>
           <p className="text-body-md text-on-surface-variant">
-            Master repository of satellite radar, optical, and aerial surveillance hydrocarbon observations.
+            Master repository of satellite radar, optical, and aerial surveillance observations.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
           <Button
             variant="outline"
             icon="download"
+            size="sm"
             onClick={() => alert('Registry exported to official CSV format.')}
           >
             Export CSV
@@ -213,6 +214,7 @@ export default function DetectionRegistryView() {
           <Button
             variant="primary"
             icon="add_circle"
+            size="sm"
             onClick={() => setIsModalOpen(true)}
           >
             Manual Sighting Entry
@@ -222,13 +224,13 @@ export default function DetectionRegistryView() {
 
       {/* Registry Summary KPI Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-surface-container-low border border-outline-variant rounded-lg">
-        <div>
+        <div className="p-2">
           <span className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant block">
             Cataloged Slicks
           </span>
           <span className="text-[24px] font-bold text-primary font-mono">{detections.length}</span>
         </div>
-        <div>
+        <div className="p-2 border-l border-outline-variant/60">
           <span className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant block">
             Active Discharges
           </span>
@@ -236,15 +238,15 @@ export default function DetectionRegistryView() {
             {detections.filter(d => d.severity === 'Critical' || d.severity === 'High').length}
           </span>
         </div>
-        <div>
+        <div className="p-2 border-l border-outline-variant/60">
           <span className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant block">
-            Total Slick Coverage
+            Total Slick Area
           </span>
           <span className="text-[24px] font-bold text-secondary font-mono">
             {detections.reduce((acc, curr) => acc + curr.areaKm2, 0).toFixed(1)} km²
           </span>
         </div>
-        <div>
+        <div className="p-2 border-l border-outline-variant/60">
           <span className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant block">
             Attributed Slicks
           </span>
@@ -255,9 +257,9 @@ export default function DetectionRegistryView() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 bg-surface-container-lowest border border-outline-variant rounded">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-4 bg-surface-container-lowest border border-outline-variant rounded">
         {/* Search */}
-        <div className="relative w-full md:w-80">
+        <div className="relative w-full md:w-80 shrink-0">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">
             search
           </span>
@@ -266,12 +268,12 @@ export default function DetectionRegistryView() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter by ID, region, vessel, sensor..."
-            className="w-full pl-9 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded text-label-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+            className="w-full pl-9 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded text-label-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-[13px]"
           />
         </div>
 
         {/* Dropdown Filters */}
-        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+        <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <label className="text-label-sm font-bold text-on-surface-variant">Severity:</label>
             <select
@@ -309,7 +311,7 @@ export default function DetectionRegistryView() {
                 setSeverityFilter('ALL');
                 setStatusFilter('ALL');
               }}
-              className="text-label-sm text-secondary font-bold hover:underline ml-2"
+              className="text-label-sm text-secondary font-bold hover:underline"
             >
               Reset Filters
             </button>

@@ -3,7 +3,7 @@ import { useNavigation } from '../../context/NavigationContext';
 
 /**
  * Header Component
- * Top bar with incident context, search, notifications, and officer profile
+ * Top app bar with contextual view tags, search, notifications, and officer profile
  */
 export default function Header() {
   const { 
@@ -15,15 +15,39 @@ export default function Header() {
     setSearchQuery 
   } = useNavigation();
 
-  return (
-    <header className="h-16 bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-6 z-30 shrink-0 sticky top-0">
-      {/* Left: Current Active Incident Context */}
-      <div className="flex items-center gap-4 shrink-0 min-w-0">
-        <h2 className="text-title-lg text-primary font-bold tracking-tight whitespace-nowrap shrink-0">
-          Maritime Intel
-        </h2>
+  const isIncidentView = ['gis', 'attribution', 'vessel', 'dossier'].includes(activeScreen);
 
-        {/* Incident Badge Group */}
+  const renderContextBadges = () => {
+    if (activeScreen === 'detection') {
+      return (
+        <div className="hidden sm:flex items-center gap-2 pl-4 border-l border-outline-variant shrink-0">
+          <span className="text-[11px] leading-none bg-surface-container-high text-primary px-2.5 py-1.5 rounded font-bold uppercase tracking-wider border border-outline-variant whitespace-nowrap shrink-0">
+            Detection Registry
+          </span>
+          <span className="text-[12px] text-on-surface-variant flex items-center gap-1.5 whitespace-nowrap shrink-0 font-medium">
+            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse shrink-0"></span>
+            6 Active Slicks
+          </span>
+        </div>
+      );
+    }
+
+    if (activeScreen === 'dashboard') {
+      return (
+        <div className="hidden sm:flex items-center gap-2 pl-4 border-l border-outline-variant shrink-0">
+          <span className="text-[11px] leading-none bg-primary text-on-primary px-2.5 py-1.5 rounded font-bold uppercase tracking-wider whitespace-nowrap shrink-0">
+            Sector 4 Surveillance
+          </span>
+          <span className="text-[12px] text-secondary flex items-center gap-1.5 whitespace-nowrap shrink-0 font-bold">
+            <span className="w-2 h-2 rounded-full bg-secondary animate-pulse shrink-0"></span>
+            Matrix Live
+          </span>
+        </div>
+      );
+    }
+
+    if (isIncidentView) {
+      return (
         <div className="hidden sm:flex items-center gap-2.5 pl-4 border-l border-outline-variant shrink-0 whitespace-nowrap">
           <span 
             onClick={() => navigateTo('dossier', { incidentId: activeIncidentId })}
@@ -41,12 +65,60 @@ export default function Header() {
             94% Confidence
           </span>
         </div>
+      );
+    }
+
+    if (activeScreen === 'alerts') {
+      return (
+        <div className="hidden sm:flex items-center gap-2 pl-4 border-l border-outline-variant shrink-0">
+          <span className="text-[11px] leading-none bg-error-container text-on-error-container px-2.5 py-1.5 rounded font-bold uppercase tracking-wider whitespace-nowrap shrink-0">
+            Anomaly Stream
+          </span>
+        </div>
+      );
+    }
+
+    if (activeScreen === 'reports') {
+      return (
+        <div className="hidden sm:flex items-center gap-2 pl-4 border-l border-outline-variant shrink-0">
+          <span className="text-[11px] leading-none bg-surface-container-high text-primary px-2.5 py-1.5 rounded font-bold uppercase tracking-wider border border-outline-variant whitespace-nowrap shrink-0">
+            Briefing Dispatcher
+          </span>
+        </div>
+      );
+    }
+
+    if (activeScreen === 'settings') {
+      return (
+        <div className="hidden sm:flex items-center gap-2 pl-4 border-l border-outline-variant shrink-0">
+          <span className="text-[11px] leading-none bg-surface-container-high text-primary px-2.5 py-1.5 rounded font-bold uppercase tracking-wider border border-outline-variant whitespace-nowrap shrink-0">
+            Terminal Configuration
+          </span>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  return (
+    <header className="h-16 bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center px-6 z-30 shrink-0 sticky top-0">
+      {/* Left: View Brand & Dynamic Screen Context */}
+      <div className="flex items-center gap-4 shrink-0 min-w-0">
+        <h2 
+          onClick={() => navigateTo('dashboard')}
+          className="text-title-lg text-primary font-bold tracking-tight whitespace-nowrap shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
+        >
+          Maritime Intel
+        </h2>
+
+        {renderContextBadges()}
       </div>
 
-      {/* Right: Search, Security Alert Badge, and Officer Avatar */}
+      {/* Right: Search, Alerts Badge, GIS shortcut, and Officer Avatar */}
       <div className="flex items-center gap-3 shrink-0">
         {/* Quick Search */}
-        <div className="relative hidden lg:block w-48 xl:w-64 shrink-0">
+        <div className="relative hidden lg:block w-44 xl:w-60 shrink-0">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">
             search
           </span>
@@ -54,8 +126,8 @@ export default function Header() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search vessels, coords..."
-            className="w-full pl-9 pr-4 py-1.5 bg-surface-container-low border border-outline-variant rounded text-label-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline"
+            placeholder="Search registry..."
+            className="w-full pl-9 pr-4 py-1.5 bg-surface-container-low border border-outline-variant rounded text-label-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-outline text-[13px]"
           />
         </div>
 

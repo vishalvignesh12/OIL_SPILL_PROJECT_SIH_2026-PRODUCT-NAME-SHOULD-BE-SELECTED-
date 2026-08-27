@@ -54,10 +54,10 @@ function ActiveViewRenderer() {
       <SideNavBar />
 
       {/* Main Content Area */}
-      <div className="ml-[260px] flex-1 flex flex-col min-h-screen">
+      <div className="ml-[260px] flex-1 flex flex-col min-h-screen min-w-0 overflow-x-hidden">
         <Header />
 
-        <main className="flex-1 p-6 md:p-8 overflow-y-auto max-w-[1600px] w-full mx-auto">
+        <main className="flex-1 p-6 md:p-8 overflow-y-auto max-w-[1500px] w-full mx-auto min-w-0">
           {renderCurrentView()}
         </main>
       </div>
