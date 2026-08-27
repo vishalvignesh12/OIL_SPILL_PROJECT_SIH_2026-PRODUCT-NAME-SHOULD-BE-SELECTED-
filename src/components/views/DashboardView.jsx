@@ -120,22 +120,22 @@ export default function DashboardView() {
         <div className="bg-surface-container-lowest border-2 border-primary/30 rounded-lg overflow-hidden shadow-xs">
           {/* Incident Banner Header */}
           <div className="px-6 py-4 bg-primary text-on-primary flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="px-3 py-1 bg-error text-on-error rounded font-bold text-label-sm uppercase tracking-wider animate-pulse">
+            <div className="flex items-center gap-3 shrink-0 flex-wrap">
+              <span className="px-3 py-1 bg-error text-on-error rounded font-bold text-label-sm uppercase tracking-wider animate-pulse whitespace-nowrap shrink-0">
                 {incident.severity} Anomaly
               </span>
-              <span className="text-title-lg font-bold text-on-primary">
+              <span className="text-title-lg font-bold text-on-primary whitespace-nowrap">
                 {incident.id}: {incident.title}
               </span>
             </div>
 
-            <div className="flex items-center gap-3 text-label-sm">
-              <span className="text-on-primary/80 flex items-center gap-1">
+            <div className="flex items-center gap-3 text-label-sm shrink-0 whitespace-nowrap">
+              <span className="text-on-primary/80 flex items-center gap-1 whitespace-nowrap">
                 <span className="material-symbols-outlined text-[16px] text-secondary-fixed">satellite_alt</span>
                 {incident.sensor}
               </span>
               <span className="text-on-primary/40">•</span>
-              <span className="text-on-primary/80 font-mono">
+              <span className="text-on-primary/80 font-mono whitespace-nowrap">
                 {incident.coordinates.formatted}
               </span>
             </div>

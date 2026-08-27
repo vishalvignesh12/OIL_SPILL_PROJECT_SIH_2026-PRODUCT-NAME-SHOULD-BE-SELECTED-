@@ -32,13 +32,13 @@ export default function StatusChip({ status, label, icon, size = 'sm', className
     : 'px-3 py-1 text-label-sm font-semibold tracking-wide';
 
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded ${sizeClasses} ${styles} ${className}`}>
+    <span className={`inline-flex items-center gap-1.5 rounded whitespace-nowrap shrink-0 select-none ${sizeClasses} ${styles} ${className}`}>
       {icon ? (
-        <span className="material-symbols-outlined text-[13px]">{icon}</span>
+        <span className="material-symbols-outlined text-[13px] shrink-0">{icon}</span>
       ) : (
-        <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`}></span>
+        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${dotColor}`}></span>
       )}
-      <span>{label || status}</span>
+      <span className="whitespace-nowrap">{label || status}</span>
     </span>
   );
 }

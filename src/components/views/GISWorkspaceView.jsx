@@ -69,10 +69,10 @@ export default function GISWorkspaceView() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-headline-md text-primary font-bold tracking-tight text-[20px]">
+              <h1 className="text-headline-md text-primary font-bold tracking-tight text-[20px] whitespace-nowrap">
                 Geospatial Forensics Workspace
               </h1>
-              <span className="px-2 py-0.5 bg-error-container text-on-error-container font-mono text-[11px] font-bold rounded uppercase">
+              <span className="px-2 py-0.5 bg-error-container text-on-error-container font-mono text-[11px] font-bold rounded uppercase whitespace-nowrap shrink-0">
                 {incident?.id || 'INC-2026-001'}
               </span>
             </div>
@@ -82,17 +82,17 @@ export default function GISWorkspaceView() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={() => navigateTo('attribution', { incidentId: incident?.id })}
-            className="px-3.5 py-1.5 bg-secondary-container text-on-secondary-container border border-secondary/30 rounded text-label-sm font-bold hover:bg-secondary/20 transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 bg-secondary-container text-on-secondary-container border border-secondary/30 rounded text-label-sm font-bold hover:bg-secondary/20 transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0"
           >
             <span className="material-symbols-outlined text-[16px]">fingerprint</span>
             Attribution Matrix (94%)
           </button>
           <button
             onClick={() => navigateTo('dossier', { incidentId: incident?.id })}
-            className="px-3.5 py-1.5 bg-primary-container text-on-primary rounded text-label-sm font-bold hover:bg-primary transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 bg-primary-container text-on-primary rounded text-label-sm font-bold hover:bg-primary transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0"
           >
             <span className="material-symbols-outlined text-[16px]">folder_shared</span>
             Evidence Dossier

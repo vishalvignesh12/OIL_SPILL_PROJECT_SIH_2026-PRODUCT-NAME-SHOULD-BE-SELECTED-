@@ -52,10 +52,10 @@ export default function AttributionView() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h1 className="text-headline-lg font-bold text-primary tracking-tight">
+            <h1 className="text-headline-lg font-bold text-primary tracking-tight whitespace-nowrap">
               Probabilistic Vessel Attribution Matrix
             </h1>
-            <span className="font-mono bg-error-container text-on-error-container text-label-sm font-bold px-2 py-0.5 rounded uppercase">
+            <span className="font-mono bg-error-container text-on-error-container text-label-sm font-bold px-2 py-0.5 rounded uppercase whitespace-nowrap shrink-0">
               {incident?.id || 'INC-2026-001'}
             </span>
           </div>
@@ -64,7 +64,7 @@ export default function AttributionView() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <Button
             variant="teal"
             icon="map"
@@ -88,11 +88,11 @@ export default function AttributionView() {
           <div className="absolute right-0 top-0 bottom-0 w-1/3 map-layer opacity-20 pointer-events-none"></div>
 
           <div className="space-y-2 z-10">
-            <div className="flex items-center gap-3">
-              <span className="px-3 py-1 bg-error text-on-error text-label-sm font-bold uppercase tracking-wider rounded">
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="px-3 py-1 bg-error text-on-error text-label-sm font-bold uppercase tracking-wider rounded whitespace-nowrap shrink-0">
                 Rank #1 Primary Offender Suspect
               </span>
-              <span className="text-secondary-fixed text-label-sm font-bold flex items-center gap-1">
+              <span className="text-secondary-fixed text-label-sm font-bold flex items-center gap-1 whitespace-nowrap shrink-0">
                 <span className="material-symbols-outlined text-[16px]">verified</span>
                 94% ML Confidence
               </span>
