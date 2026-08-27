@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Oil Spill Detection - Maritime Intel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#44474e",
+                      "on-tertiary-container": "#b97958",
+                      "tertiary-container": "#3d1500",
+                      "surface-tint": "#465f88",
+                      "on-secondary": "#ffffff",
+                      "tertiary": "#180500",
+                      "background": "#fbf9f9",
+                      "on-secondary-fixed": "#002020",
+                      "on-primary-fixed-variant": "#2d476f",
+                      "error-container": "#ffdad6",
+                      "on-primary-container": "#708ab5",
+                      "tertiary-fixed-dim": "#ffb691",
+                      "primary": "#000a1e",
+                      "primary-fixed": "#d6e3ff",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f5f3f3",
+                      "surface-dim": "#dbdad9",
+                      "outline-variant": "#c4c6cf",
+                      "on-secondary-container": "#166f6f",
+                      "inverse-surface": "#303031",
+                      "secondary-fixed-dim": "#86d4d3",
+                      "surface": "#fbf9f9",
+                      "inverse-primary": "#aec7f6",
+                      "secondary": "#096969",
+                      "outline": "#74777f",
+                      "surface-variant": "#e3e2e2",
+                      "on-tertiary": "#ffffff",
+                      "primary-container": "#002147",
+                      "on-secondary-fixed-variant": "#004f4f",
+                      "on-primary-fixed": "#001b3d",
+                      "tertiary-fixed": "#ffdbcb",
+                      "on-error-container": "#93000a",
+                      "secondary-container": "#a2f0ef",
+                      "on-primary": "#ffffff",
+                      "on-surface": "#1b1c1c",
+                      "surface-container-high": "#e9e8e7",
+                      "inverse-on-surface": "#f2f0f0",
+                      "primary-fixed-dim": "#aec7f6",
+                      "on-error": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-background": "#1b1c1c",
+                      "surface-bright": "#fbf9f9",
+                      "surface-container": "#efeded",
+                      "secondary-fixed": "#a2f0ef",
+                      "on-tertiary-fixed": "#341100",
+                      "on-tertiary-fixed-variant": "#6c391d",
+                      "surface-container-highest": "#e3e2e2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "unit": "4px",
+                      "margin-mobile": "16px",
+                      "container-max": "1440px",
+                      "margin-desktop": "40px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "title-lg": ["Inter"],
+                      "label-md": ["Inter"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-260px)] h-16 bg-surface dark:bg-surface-container border-b border-outline-variant dark:border-outline flex justify-between items-center px-margin-mobile md:px-margin-desktop md:ml-[260px] z-40">
+<div class="flex items-center gap-4">
+<!-- Mobile Menu Toggle -->
+<button class="md:hidden text-primary p-2 rounded-full hover:bg-surface-container-high">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-title-lg text-title-lg text-primary dark:text-primary-fixed hidden md:block font-bold">Geospatial Investigation Platform</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="hidden md:flex items-center border border-outline-variant rounded bg-surface-container-lowest px-3 py-1.5 focus-within:border-primary-container focus-within:border-2 transition-all mr-4">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px] mr-2">search</span>
+<input class="bg-transparent border-none p-0 text-body-md focus:ring-0 w-48 text-on-surface placeholder:text-on-surface-variant" placeholder="Search parameters..." type="text"/>
+</div>
+<button class="text-primary hover:bg-surface-container-high p-2 rounded transition-all cursor-pointer active:opacity-80 relative">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full border border-surface"></span>
+</button>
+<button class="text-primary hover:bg-surface-container-high p-2 rounded transition-all cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">security</span>
+</button>
+<button class="text-primary hover:bg-surface-container-high p-2 rounded transition-all cursor-pointer active:opacity-80 ml-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="w-[260px] h-screen fixed left-0 top-0 bg-surface-container-low dark:bg-surface-container-lowest border-r border-outline-variant dark:border-outline flex flex-col py-gutter px-4 z-50 hidden md:flex">
+<!-- Header -->
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">policy</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed leading-tight">Maritime Intel</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant tracking-wider">National Security</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary dark:border-primary-fixed-dim bg-surface-container-high scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">radar</span>
+<span class="font-label-md text-label-md">Detection</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">map</span>
+<span class="font-label-md text-label-md">Investigation Map</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">fingerprint</span>
+<span class="font-label-md text-label-md">Vessel Attribution</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">directions_boat</span>
+<span class="font-label-md text-label-md">Vessel Details</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">folder_shared</span>
+<span class="font-label-md text-label-md">Evidence Dossier</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">notifications_active</span>
+<span class="font-label-md text-label-md flex-1">Alerts</span>
+<span class="bg-error text-on-error font-label-sm text-[10px] px-1.5 rounded-full">3</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">description</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+<!-- Footer -->
+<div class="mt-auto pt-4 border-t border-outline-variant/50">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px] text-secondary" style="font-variation-settings: 'FILL' 1;">lock_person</span>
+<span class="font-label-md text-label-md">Secure Session</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="md:ml-[260px] pt-[64px] pb-[32px] min-h-screen">
+<div class="p-margin-mobile md:p-margin-desktop max-w-[1440px] mx-auto">
+<!-- Page Header -->
+<div class="mb-8">
+<div class="flex items-center text-on-surface-variant font-label-sm text-label-sm mb-2 uppercase tracking-wider">
+<span>Operations</span>
+<span class="material-symbols-outlined text-[14px] mx-2">chevron_right</span>
+<span class="text-primary font-bold">Detection</span>
+</div>
+<div class="flex justify-between items-end">
+<h2 class="font-display-lg text-display-lg md:text-[36px] md:leading-[44px] text-primary">OIL SPILL DETECTION</h2>
+<button class="bg-primary-container text-on-primary font-label-md text-label-md px-4 py-2 rounded flex items-center gap-2 hover:bg-primary-container/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-container focus:ring-offset-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                        Manual Entry
+                    </button>
+</div>
+</div>
+<!-- Filters & Controls Toolbar -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-4 mb-6 flex flex-wrap items-end gap-4">
+<div class="flex flex-col gap-1.5 min-w-[200px] flex-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Date Range</label>
+<div class="flex items-center border border-outline-variant rounded bg-surface px-3 py-2 focus-within:border-primary-container focus-within:border-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] mr-2">calendar_today</span>
+<input class="bg-transparent border-none p-0 text-body-md text-on-surface w-full focus:ring-0 cursor-pointer" readonly="" type="text" value="Last 7 Days (UTC)"/>
+</div>
+</div>
+<div class="flex flex-col gap-1.5 min-w-[200px] flex-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Confidence Threshold</label>
+<div class="flex items-center border border-outline-variant rounded bg-surface px-3 py-2 focus-within:border-primary-container focus-within:border-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] mr-2">analytics</span>
+<select class="bg-transparent border-none p-0 text-body-md text-on-surface w-full focus:ring-0 cursor-pointer appearance-none">
+<option>High (&gt;85%)</option>
+<option>Medium (&gt;50%)</option>
+<option>All Detections</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-1.5 min-w-[200px] flex-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Monitoring Region</label>
+<div class="flex items-center border border-outline-variant rounded bg-surface px-3 py-2 focus-within:border-primary-container focus-within:border-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] mr-2">my_location</span>
+<select class="bg-transparent border-none p-0 text-body-md text-on-surface w-full focus:ring-0 cursor-pointer appearance-none">
+<option>Gulf of Mexico (Sector 4)</option>
+<option>North Sea (Sector 1)</option>
+<option>Global Overview</option>
+</select>
+</div>
+</div>
+<div class="flex gap-2 ml-auto">
+<button class="border border-outline-variant text-primary font-label-md text-label-md px-4 py-2 rounded flex items-center gap-2 hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        More Filters
+                    </button>
+<button class="border border-outline-variant text-primary font-label-md text-label-md px-4 py-2 rounded flex items-center gap-2 hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export CSV
+                    </button>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="font-label-md text-label-md text-on-surface-variant py-3 px-4 uppercase tracking-wider w-[120px]">Incident ID</th>
+<th class="font-label-md text-label-md text-on-surface-variant py-3 px-4 uppercase tracking-wider">Timestamp (UTC)</th>
+<th class="font-label-md text-label-md text-on-surface-variant py-3 px-4 uppercase tracking-wider">Coordinates</th>
+<th class="font-label-md text-label-md text-on-surface-variant py-3 px-4 uppercase tracking-wider">Source</th>
+<th class="font-label-md text-label-md text-on-surface-variant py-3 px-4 uppercase tracking-wider text-right">Area (km²)</th>
+<th class="font-label-md text-label-md text-on-surface-variant py-3 px-4 uppercase tracking-wider text-center">Confidence</th>
+<th class="font-label-md text-label-md text-on-surface-variant py-3 px-4 uppercase tracking-wider">Status</th>
+<th class="font-label-md text-label-md text-on-surface-variant py-3 px-4 uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md">
+<!-- Row 1 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container-lowest transition-colors bg-surface-bright">
+<td class="py-3 px-4 font-mono text-[14px] text-primary-container font-medium">OS-2491-A</td>
+<td class="py-3 px-4 text-on-surface tabular-nums">2023-10-27 14:22:05</td>
+<td class="py-3 px-4 text-on-surface font-mono text-[13px]">28.4501° N, 88.7511° W</td>
+<td class="py-3 px-4 text-on-surface">Sentinel-1 (SAR)</td>
+<td class="py-3 px-4 text-on-surface tabular-nums text-right">14.2</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center justify-center w-full max-w-[60px]">
+<span class="font-label-sm text-label-sm text-on-surface-variant mr-1">94%</span>
+<div class="h-1.5 w-8 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-error" style="width: 94%"></div>
+</div>
+</span>
+</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-sm text-[11px] uppercase tracking-wider border border-error/20">
+                                        Critical Alert
+                                    </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="border border-primary-container text-primary-container font-label-sm text-label-sm px-3 py-1.5 rounded hover:bg-primary-container hover:text-on-primary transition-colors inline-flex items-center gap-1">
+                                        Investigate
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container-lowest transition-colors bg-surface-container-low/50">
+<td class="py-3 px-4 font-mono text-[14px] text-primary-container font-medium">OS-2490-C</td>
+<td class="py-3 px-4 text-on-surface tabular-nums">2023-10-27 11:15:30</td>
+<td class="py-3 px-4 text-on-surface font-mono text-[13px]">29.1120° N, 89.2014° W</td>
+<td class="py-3 px-4 text-on-surface">TerraSAR-X</td>
+<td class="py-3 px-4 text-on-surface tabular-nums text-right">2.8</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center justify-center w-full max-w-[60px]">
+<span class="font-label-sm text-label-sm text-on-surface-variant mr-1">78%</span>
+<div class="h-1.5 w-8 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-on-tertiary-container" style="width: 78%"></div>
+</div>
+</span>
+</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-[11px] uppercase tracking-wider border border-tertiary-fixed-dim">
+                                        Verifying
+                                    </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="border border-primary-container text-primary-container font-label-sm text-label-sm px-3 py-1.5 rounded hover:bg-primary-container hover:text-on-primary transition-colors inline-flex items-center gap-1">
+                                        Investigate
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="border-b border-outline-variant hover:bg-surface-container-lowest transition-colors bg-surface-bright">
+<td class="py-3 px-4 font-mono text-[14px] text-primary-container font-medium">OS-2489-B</td>
+<td class="py-3 px-4 text-on-surface tabular-nums">2023-10-26 22:40:12</td>
+<td class="py-3 px-4 text-on-surface font-mono text-[13px]">27.8841° N, 90.1002° W</td>
+<td class="py-3 px-4 text-on-surface">Sentinel-2 (MSI)</td>
+<td class="py-3 px-4 text-on-surface tabular-nums text-right">0.5</td>
+<td class="py-3 px-4 text-center">
+<span class="inline-flex items-center justify-center w-full max-w-[60px]">
+<span class="font-label-sm text-label-sm text-on-surface-variant mr-1">52%</span>
+<div class="h-1.5 w-8 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-outline" style="width: 52%"></div>
+</div>
+</span>
+</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider border border-outline-variant">
+                                        Low Confidence
+                                    </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="border border-primary-container text-primary-container font-label-sm text-label-sm px-3 py-1.5 rounded hover:bg-primary-container hover:text-on-primary transition-colors inline-flex items-center gap-1">
+                                        Investigate
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Loading Skeleton Row (Hidden by default, shown when loading) -->
+<tr class="border-b border-outline-variant hidden">
+<td class="py-4 px-4"><div class="h-4 bg-surface-variant rounded w-20 animate-pulse"></div></td>
+<td class="py-4 px-4"><div class="h-4 bg-surface-variant rounded w-32 animate-pulse"></div></td>
+<td class="py-4 px-4"><div class="h-4 bg-surface-variant rounded w-36 animate-pulse"></div></td>
+<td class="py-4 px-4"><div class="h-4 bg-surface-variant rounded w-24 animate-pulse"></div></td>
+<td class="py-4 px-4"><div class="h-4 bg-surface-variant rounded w-12 ml-auto animate-pulse"></div></td>
+<td class="py-4 px-4"><div class="h-4 bg-surface-variant rounded w-16 mx-auto animate-pulse"></div></td>
+<td class="py-4 px-4"><div class="h-6 bg-surface-variant rounded w-24 animate-pulse"></div></td>
+<td class="py-4 px-4"><div class="h-8 bg-surface-variant rounded w-28 ml-auto animate-pulse"></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="bg-surface-container-lowest border-t border-outline-variant px-4 py-3 flex items-center justify-between sm:px-6">
+<div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">
+                                Showing <span class="font-medium text-on-surface">1</span> to <span class="font-medium text-on-surface">3</span> of <span class="font-medium text-on-surface">97</span> results
+                            </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+<a class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-outline-variant bg-surface-container-lowest font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low" href="#">
+<span class="sr-only">Previous</span>
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</a>
+<a aria-current="page" class="z-10 bg-primary-container text-on-primary relative inline-flex items-center px-4 py-2 border border-primary-container font-label-md text-label-md" href="#">1</a>
+<a class="bg-surface-container-lowest border-outline-variant text-on-surface-variant hover:bg-surface-container-low relative inline-flex items-center px-4 py-2 border font-label-md text-label-md" href="#">2</a>
+<a class="bg-surface-container-lowest border-outline-variant text-on-surface-variant hover:bg-surface-container-low relative inline-flex items-center px-4 py-2 border font-label-md text-label-md" href="#">3</a>
+<a class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-outline-variant bg-surface-container-lowest font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low" href="#">
+<span class="sr-only">Next</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State (Hidden by default) -->
+<div class="hidden bg-surface-container-lowest border border-outline-variant rounded p-12 flex flex-col items-center justify-center text-center mt-6">
+<span class="material-symbols-outlined text-[48px] text-outline mb-4">search_off</span>
+<h3 class="font-title-lg text-title-lg text-primary mb-2">No incidents match filters</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md mb-6">Adjust your date range, confidence threshold, or monitoring region to see results.</p>
+<button class="bg-surface-container-high text-primary font-label-md text-label-md px-4 py-2 rounded border border-outline-variant hover:bg-surface-variant transition-colors">
+                    Clear All Filters
+                </button>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 right-0 w-full md:w-[calc(100%-260px)] h-8 bg-surface-container-lowest dark:bg-surface-dim border-t border-outline-variant flex items-center justify-between px-margin-mobile md:px-margin-desktop md:ml-[260px] z-50">
+<div class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface flex items-center gap-4">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                System Health: Operational
+            </span>
+<span class="border-l border-outline-variant pl-4">UTC: <span id="utc-clock">14:22:05</span></span>
+<span class="border-l border-outline-variant pl-4 font-bold text-secondary hidden sm:inline">Secure Session: Active</span>
+</div>
+<div class="flex gap-4 font-label-sm text-label-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+</div>
+</footer>
+<script>
+        // Simple UTC clock update
+        function updateClock() {
+            const now = new Date();
+            const utcTime = now.toISOString().substring(11, 19);
+            document.getElementById('utc-clock').textContent = utcTime;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body></html>

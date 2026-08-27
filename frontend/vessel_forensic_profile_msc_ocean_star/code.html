@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vessel Details - Geospatial Investigation Platform</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#44474e",
+                        "on-tertiary-container": "#b97958",
+                        "tertiary-container": "#3d1500",
+                        "surface-tint": "#465f88",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#180500",
+                        "background": "#fbf9f9",
+                        "on-secondary-fixed": "#002020",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#708ab5",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "primary": "#000a1e",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f5f3f3",
+                        "surface-dim": "#dbdad9",
+                        "outline-variant": "#c4c6cf",
+                        "on-secondary-container": "#166f6f",
+                        "inverse-surface": "#303031",
+                        "secondary-fixed-dim": "#86d4d3",
+                        "surface": "#fbf9f9",
+                        "inverse-primary": "#aec7f6",
+                        "secondary": "#096969",
+                        "outline": "#74777f",
+                        "surface-variant": "#e3e2e2",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#002147",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "on-primary-fixed": "#001b3d",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#a2f0ef",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#1b1c1c",
+                        "surface-container-high": "#e9e8e7",
+                        "inverse-on-surface": "#f2f0f0",
+                        "primary-fixed-dim": "#aec7f6",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-background": "#1b1c1c",
+                        "surface-bright": "#fbf9f9",
+                        "surface-container": "#efeded",
+                        "secondary-fixed": "#a2f0ef",
+                        "on-tertiary-fixed": "#341100",
+                        "on-tertiary-fixed-variant": "#6c391d",
+                        "surface-container-highest": "#e3e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #fbf9f9; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined[data-weight="fill"] { font-variation-settings: 'FILL' 1; }
+        .table-row-zebra:nth-child(even) { background-color: #F5F5F5; }
+    </style>
+</head>
+<body class="text-on-surface bg-background">
+<!-- SideNavBar -->
+<nav class="w-[260px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant flex flex-col py-gutter px-4 z-40 hidden md:flex">
+<div class="mb-8 px-2 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl" data-weight="fill">security</span>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Maritime Intel</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">National Security</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<ul class="space-y-1">
+<li><a class="flex items-center gap-3 px-3 py-2 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 rounded scale-100 active:scale-[0.98]" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> Dashboard</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 rounded scale-100 active:scale-[0.98]" href="#"><span class="material-symbols-outlined" data-icon="radar">radar</span> Detection</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 rounded scale-100 active:scale-[0.98]" href="#"><span class="material-symbols-outlined" data-icon="map">map</span> Investigation Map</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 rounded scale-100 active:scale-[0.98]" href="#"><span class="material-symbols-outlined" data-icon="fingerprint">fingerprint</span> Vessel Attribution</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 font-label-md text-label-md text-primary font-bold border-r-4 border-primary bg-surface-container-high rounded scale-100 active:scale-[0.98]" href="#"><span class="material-symbols-outlined" data-icon="directions_boat">directions_boat</span> Vessel Details</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 rounded scale-100 active:scale-[0.98]" href="#"><span class="material-symbols-outlined" data-icon="folder_shared">folder_shared</span> Evidence Dossier</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 rounded scale-100 active:scale-[0.98]" href="#"><span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span> Alerts</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 rounded scale-100 active:scale-[0.98]" href="#"><span class="material-symbols-outlined" data-icon="description">description</span> Reports</a></li>
+<li><a class="flex items-center gap-3 px-3 py-2 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 rounded scale-100 active:scale-[0.98]" href="#"><span class="material-symbols-outlined" data-icon="settings">settings</span> Settings</a></li>
+</ul>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 px-3 py-2 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 rounded scale-100 active:scale-[0.98]" href="#"><span class="material-symbols-outlined" data-icon="lock_person">lock_person</span> Secure Session</a>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-260px)] h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-margin-mobile md:px-margin-desktop z-30">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-primary"><span class="material-symbols-outlined">menu</span></button>
+<h2 class="font-title-lg text-title-lg text-primary font-bold">Geospatial Investigation Platform</h2>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-all p-2 rounded-full cursor-pointer active:opacity-80"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-all p-2 rounded-full cursor-pointer active:opacity-80"><span class="material-symbols-outlined" data-icon="security">security</span></button>
+<button class="text-on-surface-variant hover:bg-surface-container-high transition-all p-2 rounded-full cursor-pointer active:opacity-80"><span class="material-symbols-outlined" data-icon="account_circle">account_circle</span></button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-24 pb-16 px-margin-mobile md:px-margin-desktop md:ml-[260px] min-h-screen">
+<div class="max-w-container-max mx-auto space-y-6">
+<!-- Vessel Header Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary font-bold flex items-center gap-2">
+                            MSC Ocean Star
+                            <span class="bg-error-container text-on-error-container font-label-sm text-label-sm px-2 py-1 rounded uppercase tracking-wider border border-error">High Risk</span>
+</h2>
+<div class="flex flex-wrap gap-x-6 gap-y-2 mt-2 font-label-md text-label-md text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">tag</span> MMSI: <span class="font-mono text-on-surface">636092001</span></span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">directions_boat</span> Type: <span class="text-on-surface">Crude Tanker</span></span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">flag</span> Flag: <span class="text-on-surface">Liberia</span></span>
+</div>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<button class="flex-1 md:flex-none px-4 py-2 bg-white border border-primary-container text-primary-container font-label-md text-label-md rounded hover:bg-surface-container-lowest transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span> Export Dossier
+                        </button>
+<button class="flex-1 md:flex-none px-4 py-2 bg-primary-container text-white font-label-md text-label-md rounded hover:opacity-90 transition-opacity focus:ring-2 focus:ring-offset-2 focus:ring-primary-container flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">track_changes</span> Monitor
+                        </button>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Map Panel (Span 8) -->
+<div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-lg flex flex-col overflow-hidden h-[600px]">
+<div class="bg-[#F5F5F5] px-4 py-3 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-title-lg text-title-lg text-primary font-bold flex items-center gap-2">
+<span class="material-symbols-outlined">map</span> 7-Day Trajectory
+                        </h3>
+<div class="flex gap-2">
+<button class="p-1 text-on-surface-variant hover:bg-surface-variant rounded"><span class="material-symbols-outlined text-[20px]">zoom_in</span></button>
+<button class="p-1 text-on-surface-variant hover:bg-surface-variant rounded"><span class="material-symbols-outlined text-[20px]">zoom_out</span></button>
+</div>
+</div>
+<div class="flex-1 relative bg-surface-container-low">
+<div class="absolute inset-0 w-full h-full bg-cover bg-center" data-alt="A high-contrast, institutional satellite map view of a maritime region, overlaid with a bright neon green trajectory path indicating a ship's route. The aesthetic is data-dense, military-grade interface design, utilizing a dark blue and grey topographical basemap with precise vector lines and stark white tactical markers. The lighting is digital and luminous against the darker background." data-location="Strait of Malacca" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB3RxIijqpSnebbiYP3VT3GN4s-wN2njp-BpMsAqmLY6nc3RGYMrpNFa6xhTrCIDqZkWTNEJaunhyZF5SLb4ge-uJ2l6hT-Fg9mh9V0s_mEX8fCwnuSDlPXwZd_cHp3_niTK1mMEAOTvsAtaHO2MPVyqvXs7SroxT2xvRe1LKtlc2LlUO9XjRi2L2BoaB91l-4p1X3G0jH41i-o6dl6MwiUHLi5H-u2Vx9exSxAjnLCMQuGm9y2FpzyeA')"></div>
+<!-- UI Overlays for Map -->
+<div class="absolute bottom-4 left-4 bg-surface-container-lowest/90 backdrop-blur-sm border border-outline-variant p-2 rounded shadow-sm flex flex-col gap-1 font-label-sm text-label-sm">
+<div class="flex items-center gap-2"><span class="w-3 h-3 bg-secondary rounded-full"></span> Valid AIS</div>
+<div class="flex items-center gap-2"><span class="w-3 h-3 bg-error rounded-full"></span> AIS Gap / Spoofing</div>
+</div>
+</div>
+</div>
+<!-- Right Column (Span 4) -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Behavior Summary -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg flex-1">
+<div class="bg-[#F5F5F5] px-4 py-3 border-b border-outline-variant">
+<h3 class="font-title-lg text-title-lg text-primary font-bold flex items-center gap-2">
+<span class="material-symbols-outlined">analytics</span> Behaviour Summary
+                            </h3>
+</div>
+<div class="p-4 space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface p-3 border border-outline-variant rounded">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wide">Avg Speed</p>
+<p class="font-headline-md text-headline-md text-on-surface">12.4 <span class="text-sm font-normal text-on-surface-variant">knots</span></p>
+</div>
+<div class="bg-error-container p-3 border border-error rounded">
+<p class="font-label-sm text-label-sm text-on-error-container uppercase tracking-wide">Route Deviation</p>
+<p class="font-headline-md text-headline-md text-error">14.2%</p>
+</div>
+</div>
+<div>
+<h4 class="font-label-md text-label-md text-primary font-semibold mb-2">Detected AIS Gaps</h4>
+<ul class="space-y-2">
+<li class="flex items-start gap-2 bg-surface p-2 border border-outline-variant rounded text-sm">
+<span class="material-symbols-outlined text-error text-[18px]">warning</span>
+<div>
+<p class="font-medium text-on-surface">Oct 24, 14:00z - 18:30z</p>
+<p class="text-on-surface-variant text-xs font-mono">Lat: 34.21, Lon: -12.44</p>
+</div>
+</li>
+<li class="flex items-start gap-2 bg-surface p-2 border border-outline-variant rounded text-sm">
+<span class="material-symbols-outlined text-error text-[18px]">warning</span>
+<div>
+<p class="font-medium text-on-surface">Oct 22, 02:15z - 06:45z</p>
+<p class="text-on-surface-variant text-xs font-mono">Lat: 35.81, Lon: -10.12</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Previous Incidents -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg">
+<div class="bg-[#F5F5F5] px-4 py-3 border-b border-outline-variant">
+<h3 class="font-title-lg text-title-lg text-primary font-bold flex items-center gap-2">
+<span class="material-symbols-outlined">history</span> Previous Incidents
+                            </h3>
+</div>
+<div class="p-0">
+<div class="p-3 border-b border-outline-variant hover:bg-surface-variant transition-colors cursor-pointer">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm bg-tertiary-container text-on-tertiary-container px-2 py-0.5 rounded">Pollution</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2023-08-12</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">Suspected bilge dumping detection in EEZ sector 7.</p>
+</div>
+<div class="p-3 hover:bg-surface-variant transition-colors cursor-pointer">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm bg-surface-tint text-on-primary px-2 py-0.5 rounded">Regulatory</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2022-11-04</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">Port state control detention - equipment malfunction.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- AIS History Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden">
+<div class="bg-[#F5F5F5] px-4 py-3 border-b border-outline-variant">
+<h3 class="font-title-lg text-title-lg text-primary font-bold flex items-center gap-2">
+<span class="material-symbols-outlined">list_alt</span> AIS History (Last 24h)
+                    </h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface border-b border-outline-variant font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+<th class="px-4 py-3">Timestamp (UTC)</th>
+<th class="px-4 py-3">Lat / Long</th>
+<th class="px-4 py-3">Speed (kn)</th>
+<th class="px-4 py-3">Heading (°)</th>
+<th class="px-4 py-3">Status</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface">
+<tr class="table-row-zebra border-b border-outline-variant/50">
+<td class="px-4 py-3 font-mono text-sm">2023-10-25 14:22:00</td>
+<td class="px-4 py-3 font-mono text-sm">34.5512, -13.0014</td>
+<td class="px-4 py-3">12.2</td>
+<td class="px-4 py-3">184</td>
+<td class="px-4 py-3"><span class="px-2 py-1 bg-surface-variant text-on-surface font-label-sm rounded text-xs">Underway</span></td>
+</tr>
+<tr class="table-row-zebra border-b border-outline-variant/50">
+<td class="px-4 py-3 font-mono text-sm">2023-10-25 13:52:00</td>
+<td class="px-4 py-3 font-mono text-sm">34.6105, -12.9801</td>
+<td class="px-4 py-3">12.5</td>
+<td class="px-4 py-3">182</td>
+<td class="px-4 py-3"><span class="px-2 py-1 bg-surface-variant text-on-surface font-label-sm rounded text-xs">Underway</span></td>
+</tr>
+<tr class="table-row-zebra border-b border-outline-variant/50 bg-error-container/20">
+<td class="px-4 py-3 font-mono text-sm text-error">2023-10-25 09:10:00</td>
+<td class="px-4 py-3 font-mono text-sm text-on-surface-variant">--</td>
+<td class="px-4 py-3 text-on-surface-variant">--</td>
+<td class="px-4 py-3 text-on-surface-variant">--</td>
+<td class="px-4 py-3"><span class="px-2 py-1 bg-error text-on-error font-label-sm rounded text-xs">Signal Lost</span></td>
+</tr>
+<tr class="table-row-zebra border-b border-outline-variant/50">
+<td class="px-4 py-3 font-mono text-sm">2023-10-25 08:30:00</td>
+<td class="px-4 py-3 font-mono text-sm">35.1200, -12.1100</td>
+<td class="px-4 py-3">11.8</td>
+<td class="px-4 py-3">190</td>
+<td class="px-4 py-3"><span class="px-2 py-1 bg-surface-variant text-on-surface font-label-sm rounded text-xs">Underway</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 right-0 w-full md:w-[calc(100%-260px)] h-8 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between px-margin-mobile md:px-margin-desktop z-50">
+<span class="font-label-sm text-label-sm text-on-surface-variant">System Health: Operational | UTC: 14:22:05 | Secure Session: Active</span>
+<div class="flex gap-4">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary" href="#">Privacy Policy</a>
+</div>
+</footer>
+</body></html>

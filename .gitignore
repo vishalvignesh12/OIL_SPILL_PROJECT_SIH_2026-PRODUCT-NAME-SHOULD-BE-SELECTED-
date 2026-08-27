@@ -1,0 +1,96 @@
+# =========================
+# Environment / Secrets
+# =========================
+
+.env
+.env.*
+!.env.example
+
+# =========================
+# Python
+# =========================
+
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+.venv/
+venv/
+env/
+
+# =========================
+# Node / Frontend
+# =========================
+
+node_modules/
+dist/
+build/
+.next/
+.nuxt/
+.vite/
+
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# =========================
+# IDE
+# =========================
+
+.vscode/
+.idea/
+
+# =========================
+# OS
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+
+*.log
+
+# =========================
+# Local databases
+# =========================
+
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# ML / Large Data
+# =========================
+
+*.pt
+*.pth
+*.onnx
+*.h5
+*.tflite
+*.ckpt
+
+# Satellite / GIS data
+*.tif
+*.tiff
+*.jp2
+*.nc
+*.hdf
+*.h5
+
+# Large archives
+*.zip
+*.tar
+*.tar.gz
+
+# =========================
+# Temporary files
+# =========================
+
+tmp/
+temp/

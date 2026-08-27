@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Evidence Dossier - INC-2026-001 | Geospatial Investigation Platform</title>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#44474e",
+                    "on-tertiary-container": "#b97958",
+                    "tertiary-container": "#3d1500",
+                    "surface-tint": "#465f88",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#180500",
+                    "background": "#fbf9f9",
+                    "on-secondary-fixed": "#002020",
+                    "on-primary-fixed-variant": "#2d476f",
+                    "error-container": "#ffdad6",
+                    "on-primary-container": "#708ab5",
+                    "tertiary-fixed-dim": "#ffb691",
+                    "primary": "#000a1e",
+                    "primary-fixed": "#d6e3ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#f5f3f3",
+                    "surface-dim": "#dbdad9",
+                    "outline-variant": "#c4c6cf",
+                    "on-secondary-container": "#166f6f",
+                    "inverse-surface": "#303031",
+                    "secondary-fixed-dim": "#86d4d3",
+                    "surface": "#fbf9f9",
+                    "inverse-primary": "#aec7f6",
+                    "secondary": "#096969",
+                    "outline": "#74777f",
+                    "surface-variant": "#e3e2e2",
+                    "on-tertiary": "#ffffff",
+                    "primary-container": "#002147",
+                    "on-secondary-fixed-variant": "#004f4f",
+                    "on-primary-fixed": "#001b3d",
+                    "tertiary-fixed": "#ffdbcb",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#a2f0ef",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#1b1c1c",
+                    "surface-container-high": "#e9e8e7",
+                    "inverse-on-surface": "#f2f0f0",
+                    "primary-fixed-dim": "#aec7f6",
+                    "on-error": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-background": "#1b1c1c",
+                    "surface-bright": "#fbf9f9",
+                    "surface-container": "#efeded",
+                    "secondary-fixed": "#a2f0ef",
+                    "on-tertiary-fixed": "#341100",
+                    "on-tertiary-fixed-variant": "#6c391d",
+                    "surface-container-highest": "#e3e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "unit": "4px",
+                    "margin-mobile": "16px",
+                    "container-max": "1440px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Inter"
+                    ],
+                    "display-lg": [
+                            "Inter"
+                    ],
+                    "headline-lg": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "headline-lg-mobile": [
+                            "Inter"
+                    ],
+                    "label-sm": [
+                            "Inter"
+                    ],
+                    "title-lg": [
+                            "Inter"
+                    ],
+                    "label-md": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "title-lg": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .symbol-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .zebra-row:nth-child(even) { background-color: theme('colors.surface-container-low'); }
+        .data-card { border: 1px solid theme('colors.outline-variant'); background-color: theme('colors.surface-container-lowest'); border-radius: theme('borderRadius.DEFAULT'); }
+        .section-header { background-color: theme('colors.surface-container-low'); border-bottom: 1px solid theme('colors.outline-variant'); }
+        .timeline-line::before { content: ''; position: absolute; left: 15px; top: 32px; bottom: -8px; width: 2px; background-color: theme('colors.outline-variant'); }
+        .timeline-item:last-child .timeline-line::before { display: none; }
+        
+        /* Typography Helpers based on config */
+        .font-label-sm { font-family: theme('fontFamily.label-sm'); font-size: theme('fontSize.label-sm.0'); line-height: theme('fontSize.label-sm.1.lineHeight'); letter-spacing: theme('fontSize.label-sm.1.letterSpacing'); font-weight: theme('fontSize.label-sm.1.fontWeight'); }
+        .text-label-sm { font-size: theme('fontSize.label-sm.0'); line-height: theme('fontSize.label-sm.1.lineHeight'); }
+        .font-label-md { font-family: theme('fontFamily.label-md'); font-size: theme('fontSize.label-md.0'); line-height: theme('fontSize.label-md.1.lineHeight'); letter-spacing: theme('fontSize.label-md.1.letterSpacing'); font-weight: theme('fontSize.label-md.1.fontWeight'); }
+        .text-label-md { font-size: theme('fontSize.label-md.0'); line-height: theme('fontSize.label-md.1.lineHeight'); }
+        .font-body-md { font-family: theme('fontFamily.body-md'); font-size: theme('fontSize.body-md.0'); line-height: theme('fontSize.body-md.1.lineHeight'); font-weight: theme('fontSize.body-md.1.fontWeight'); }
+        .text-body-md { font-size: theme('fontSize.body-md.0'); line-height: theme('fontSize.body-md.1.lineHeight'); }
+        .font-title-lg { font-family: theme('fontFamily.title-lg'); font-size: theme('fontSize.title-lg.0'); line-height: theme('fontSize.title-lg.1.lineHeight'); font-weight: theme('fontSize.title-lg.1.fontWeight'); }
+        .text-title-lg { font-size: theme('fontSize.title-lg.0'); line-height: theme('fontSize.title-lg.1.lineHeight'); }
+        .font-headline-md { font-family: theme('fontFamily.headline-md'); font-size: theme('fontSize.headline-md.0'); line-height: theme('fontSize.headline-md.1.lineHeight'); font-weight: theme('fontSize.headline-md.1.fontWeight'); }
+        .text-headline-md { font-size: theme('fontSize.headline-md.0'); line-height: theme('fontSize.headline-md.1.lineHeight'); }
+        
+        /* Specific brand UI components */
+        .btn-primary { background-color: theme('colors.primary-container'); color: theme('colors.on-primary'); border: 2px solid transparent; padding: 8px 16px; border-radius: theme('borderRadius.DEFAULT'); display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; cursor: pointer; }
+        .btn-primary:focus { outline: none; border-color: theme('colors.primary'); box-shadow: 0 0 0 2px theme('colors.background'), 0 0 0 4px theme('colors.primary-container'); }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-secondary { background-color: transparent; border: 2px solid theme('colors.primary-container'); color: theme('colors.primary-container'); padding: 8px 16px; border-radius: theme('borderRadius.DEFAULT'); display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; cursor: pointer; }
+        .btn-secondary:hover { background-color: theme('colors.surface-container-high'); }
+        
+        .chip { padding: 4px 8px; border-radius: theme('borderRadius.DEFAULT'); display: inline-flex; align-items: center; white-space: nowrap; }
+        .chip-critical { background-color: theme('colors.error-container'); color: theme('colors.on-error-container'); }
+        .chip-success { background-color: theme('colors.secondary-container'); color: theme('colors.on-secondary-container'); }
+        .chip-warning { background-color: #FFF3E0; color: #E65100; /* Custom for warning not in palette explicitly */ }
+        
+        .mono-id { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-variant-numeric: tabular-nums; }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden min-h-screen flex flex-col md:flex-row">
+<!-- 1. SideNavBar -->
+<nav class="bg-surface-container-low dark:bg-surface-container-lowest w-[260px] h-screen fixed left-0 top-0 border-r border-outline-variant dark:border-outline flat no shadows flex flex-col h-full py-gutter px-4 z-40 hidden md:flex">
+<!-- Header -->
+<div class="mb-8 flex flex-col items-start gap-2">
+<div class="w-12 h-12 bg-primary-container rounded flex items-center justify-center text-on-primary font-bold">
+<span class="material-symbols-outlined" style="font-size: 28px;">shield</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Maritime Intel</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">National Security</p>
+</div>
+</div>
+<!-- Main Nav -->
+<div class="flex-1 overflow-y-auto w-full">
+<ul class="space-y-1 w-full flex flex-col">
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">radar</span>
+<span class="font-label-md text-label-md">Detection</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-md text-label-md">Investigation Map</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">fingerprint</span>
+<span class="font-label-md text-label-md">Vessel Attribution</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">directions_boat</span>
+<span class="font-label-md text-label-md">Vessel Details</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary dark:border-primary-fixed-dim bg-surface-container-high hover:bg-surface-container-highest transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined symbol-filled">folder_shared</span>
+<span class="font-label-md text-label-md">Evidence Dossier</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface transition-colors duration-150 scale-100 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</li>
+</ul>
+</div>
+<!-- Footer Nav -->
+<div class="mt-auto pt-4 border-t border-outline-variant w-full">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-secondary hover:bg-surface-container-highest hover:text-primary transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">lock_person</span>
+<span class="font-label-md text-label-md font-bold">Secure Session</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area Container -->
+<div class="flex-1 flex flex-col md:ml-[260px] min-h-screen relative w-full">
+<!-- 2. TopAppBar -->
+<header class="bg-surface dark:bg-surface-container fixed top-0 right-0 w-full md:w-[calc(100%-260px)] h-16 border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center px-margin-mobile md:px-margin-desktop z-30">
+<!-- Mobile Menu Toggle (Visible only on mobile) -->
+<button class="md:hidden text-primary p-2 -ml-2 rounded hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="font-headline-md text-headline-md text-primary truncate flex-1">
+                Geospatial Investigation Platform
+            </div>
+<div class="flex items-center gap-4 ml-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="pl-10 pr-4 py-1.5 text-sm border border-outline-variant bg-surface-container-lowest focus:border-primary-container focus:ring-1 focus:ring-primary-container rounded w-64 text-on-surface placeholder:text-outline-variant transition-all font-body-md text-body-md" placeholder="Search ID, Vessel, Coordinates..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer active:opacity-80 flex items-center justify-center relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer active:opacity-80 flex items-center justify-center">
+<span class="material-symbols-outlined">security</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer active:opacity-80 flex items-center justify-center">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 pt-16 pb-12 px-margin-mobile md:px-margin-desktop py-gutter bg-background overflow-y-auto">
+<!-- Page Header area -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 mt-6">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Official Investigation Report</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full mx-1"></span>
+<span class="chip chip-critical font-label-sm text-label-sm">High Priority</span>
+</div>
+<h2 class="font-display-lg text-display-lg text-primary flex items-center gap-3">
+<span class="material-symbols-outlined text-4xl text-primary-container">folder_open</span>
+                        Dossier: <span class="mono-id">INC-2026-001</span>
+</h2>
+</div>
+<div class="flex gap-3">
+<button class="btn-secondary font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">history</span> Version History
+                    </button>
+<button class="btn-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span> Export Official Report
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter max-w-container-max mx-auto pb-10">
+<!-- Col 1: Summary & Vessel (Span 8) -->
+<div class="md:col-span-8 flex flex-col gap-gutter">
+<!-- Incident Summary Card -->
+<section class="data-card overflow-hidden">
+<div class="section-header px-6 py-4 flex justify-between items-center">
+<h3 class="font-title-lg text-title-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">analytics</span> Incident Summary
+                            </h3>
+<span class="font-label-md text-label-md text-on-surface-variant">Last updated: 14:05 UTC</span>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Classification</p>
+<p class="font-body-md text-body-md font-semibold text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">warning</span> Illicit Discharge
+                                    </p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Location</p>
+<p class="font-body-md text-body-md font-semibold text-on-surface">Bay of Bengal</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Coordinates</p>
+<p class="font-body-md text-body-md mono-id text-on-surface">15°42'18"N 87°21'05"E</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Analysis Confidence</p>
+<div class="flex items-center gap-2">
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden max-w-[80px]">
+<div class="bg-secondary-container h-full w-[94%]"></div>
+</div>
+<span class="font-body-md text-body-md font-bold text-on-surface mono-id">94%</span>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-outline-variant">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Executive Synopsis</p>
+<p class="font-body-lg text-body-lg text-on-surface">
+                                    Geospatial analysis indicates a high-probability illicit oil discharge event in the central Bay of Bengal. Synthetic Aperture Radar (SAR) imagery detected a surface anomaly stretching 14 nautical miles, characterized by dampened capillary waves consistent with heavy fuel oil. Trajectory modeling aligns the spill origin precisely with the maritime route of a single commercial vessel.
+                                </p>
+</div>
+</div>
+</section>
+<!-- Vessel Association Card -->
+<section class="data-card overflow-hidden">
+<div class="section-header px-6 py-4 flex justify-between items-center bg-primary text-on-primary">
+<h3 class="font-title-lg text-title-lg flex items-center gap-2">
+<span class="material-symbols-outlined">directions_boat</span> Primary Candidate Vessel
+                            </h3>
+<div class="chip bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md border border-outline-variant/30">
+                                Attribution Score: <span class="font-bold ml-1 mono-id">87%</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex flex-col md:flex-row gap-6">
+<!-- Vessel Image Placeholder -->
+<div class="w-full md:w-1/3 aspect-[4/3] bg-surface-container-high rounded border border-outline-variant overflow-hidden relative group">
+<img class="w-full h-full object-cover" data-alt="A high-resolution satellite optical photo of a large commercial bulk carrier ship named MSC Ocean Star navigating through deep blue ocean waters. The image is taken from a top-down aerial perspective, showing the vessel's red hull and white superstructure clearly against the water. The lighting is bright and analytical, resembling a specialized government intelligence surveillance feed. The mood is clinical and investigative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvOuLohcm29930M2Skrc1F2Z_LUlT80xbwY2oxg09ELEhnAZQwALQyZUBmTRu9OSWqTge9C0IheXBjNXlKdpA2MwUMWjchBrJqpkJzeuOi9S5jYO2v_5B6abeQFhDhz8KUs1RNtNFmOP0Uciobf_uJRhs6nmUGeqqbn7qYZl8EjRp3-UFDgEpSGYlw63NYuL-xL1LyNtHFlcWv9i3J3ZmNvHxhncw1gEofJCtRsdBjCriGfWBP7dFcVg"/>
+<div class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-all"></div>
+<div class="absolute bottom-2 left-2 bg-inverse-surface/80 text-inverse-on-surface px-2 py-1 rounded font-label-sm text-label-sm flex items-center gap-1 backdrop-blur-sm">
+<span class="material-symbols-outlined text-[12px]">photo_camera</span> Optical Capture
+                                    </div>
+</div>
+<div class="w-full md:w-2/3 flex flex-col justify-between">
+<div>
+<h4 class="font-headline-md text-headline-md text-primary mb-1">MSC Ocean Star</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Bulk Carrier | Flag: Panama</p>
+<div class="grid grid-cols-2 gap-y-3 gap-x-6">
+<div class="flex justify-between border-b border-surface-variant pb-1">
+<span class="font-label-md text-label-md text-on-surface-variant">IMO Number</span>
+<span class="font-body-md text-body-md mono-id font-medium text-on-surface">9384712</span>
+</div>
+<div class="flex justify-between border-b border-surface-variant pb-1">
+<span class="font-label-md text-label-md text-on-surface-variant">MMSI</span>
+<span class="font-body-md text-body-md mono-id font-medium text-on-surface">352898000</span>
+</div>
+<div class="flex justify-between border-b border-surface-variant pb-1">
+<span class="font-label-md text-label-md text-on-surface-variant">Length / Beam</span>
+<span class="font-body-md text-body-md text-on-surface">225m / 32m</span>
+</div>
+<div class="flex justify-between border-b border-surface-variant pb-1">
+<span class="font-label-md text-label-md text-on-surface-variant">Gross Tonnage</span>
+<span class="font-body-md text-body-md mono-id text-on-surface">43,022</span>
+</div>
+<div class="flex justify-between border-b border-surface-variant pb-1">
+<span class="font-label-md text-label-md text-on-surface-variant">Owner</span>
+<span class="font-body-md text-body-md text-on-surface truncate max-w-[120px]" title="Oceanic Transport Ltd.">Oceanic Transport Ltd.</span>
+</div>
+<div class="flex justify-between border-b border-surface-variant pb-1">
+<span class="font-label-md text-label-md text-on-surface-variant">Destination</span>
+<span class="font-body-md text-body-md text-on-surface">Singapore (SGSIN)</span>
+</div>
+</div>
+</div>
+<div class="mt-4 bg-surface-container-low p-3 border-l-4 border-primary rounded-r">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Attribution Rationale</p>
+<p class="font-body-md text-body-md text-on-surface text-sm">
+                                            Vessel trajectory intersects calculated origin point at exact derived timeframe (±14 min). Only vessel within 50nm radius during critical window. Displays suspicious AIS gap pattern corresponding with detection zone.
+                                        </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Col 2: Map & Checklist (Span 4) -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- Origin Analysis Map -->
+<section class="data-card overflow-hidden flex flex-col h-[320px]">
+<div class="section-header px-4 py-3 flex justify-between items-center">
+<h3 class="font-label-md text-label-md font-bold text-primary flex items-center gap-2 uppercase tracking-wide">
+<span class="material-symbols-outlined text-sm">my_location</span> Origin Analysis
+                            </h3>
+</div>
+<div class="relative flex-1 bg-surface-container-high w-full" data-location="Bay of Bengal" style="">
+<!-- In a real app this would be a map component, using image placeholder as requested -->
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A dark-mode tactical maritime map of the Bay of Bengal showing a probabilistic origin point analysis. The map features a highly technical grid overlay, subtle bathymetric lines in deep blues, and a glowing probabilistic heat-map representing a vessel's trajectory and spill origin. The aesthetic is strictly military intelligence or government surveillance software, focused on precision and data density. Dark, high-contrast, professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAro1HqLbs54v0t62nnCySmcrnfjWD-mvAjhzOd2nqIUGNGreKM0wdMiOM-WJ9q3FdnIUAftCM6NOLbaxHvIVdRDXH5zsZLgWjgIwrIU_1WxBHOzK3I4sKeUPkOoUePDyG51nXm4lfzlRKIFyqxtAciX152JTFuwH5sDwW2C3bMX9NigCeR0Pgyq4DQaIXqcQYkZb5v2tCDSq5gTQUY8ECBrNZzGigWKKyA_ruDSWhuKlAajAO_2-IZEw"/>
+<!-- Overlays to make it look like a UI map -->
+<div class="absolute inset-0 border-[4px] border-primary/20 pointer-events-none"></div>
+<div class="absolute top-2 right-2 bg-surface/90 backdrop-blur p-2 rounded border border-outline-variant shadow-sm flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-error block"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Detection Point</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full border-2 border-primary border-dashed block"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Calc. Origin</span>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 bg-surface/95 backdrop-blur-md border-t border-outline-variant p-3">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Probabilistic Time:</span>
+<span class="font-body-md text-body-md mono-id font-semibold text-primary">2026-10-14 08:42 Z</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Drift Model:</span>
+<span class="font-body-md text-body-md text-on-surface text-sm">Leeway + Stokes (90% conf)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Evidence Checklist -->
+<section class="data-card overflow-hidden">
+<div class="section-header px-4 py-3 bg-surface-container-highest">
+<h3 class="font-label-md text-label-md font-bold text-primary flex items-center gap-2 uppercase tracking-wide">
+<span class="material-symbols-outlined text-sm">fact_check</span> Evidence Vector Checklist
+                            </h3>
+</div>
+<div class="p-0">
+<ul class="flex flex-col">
+<li class="px-4 py-3 border-b border-surface-variant flex items-start gap-3 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-secondary mt-0.5 symbol-filled">check_circle</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold">Spatial Alignment</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-0.5">Vessel track intersects calculated origin zone (Distance: 0.8nm).</p>
+</div>
+</li>
+<li class="px-4 py-3 border-b border-surface-variant flex items-start gap-3 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-secondary mt-0.5 symbol-filled">check_circle</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold">Temporal Coincidence</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-0.5">Presence confirms at T-zero derived from oil drift backward-propagation.</p>
+</div>
+</li>
+<li class="px-4 py-3 border-b border-surface-variant flex items-start gap-3 hover:bg-surface-container-low transition-colors bg-error-container/20">
+<span class="material-symbols-outlined text-[#E65100] mt-0.5 symbol-filled">warning</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold">AIS Anomaly Detected</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-0.5">4-hour transmission gap bracketed around estimated discharge event.</p>
+</div>
+</li>
+<li class="px-4 py-3 flex items-start gap-3 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-secondary mt-0.5 symbol-filled">check_circle</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface font-semibold">Trajectory Consistency</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-0.5">No erratic course changes pre/post gap; maintains expected heading.</p>
+</div>
+</li>
+</ul>
+</div>
+</section>
+</div>
+<!-- Full Width Timeline Row (Span 12) -->
+<div class="col-span-1 md:col-span-12">
+<section class="data-card overflow-hidden">
+<div class="section-header px-6 py-4 flex justify-between items-center">
+<h3 class="font-title-lg text-title-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">schedule</span> Event Timeline Log
+                            </h3>
+</div>
+<div class="p-6 overflow-x-auto">
+<!-- Horizontal Timeline Structure for Density -->
+<div class="min-w-[800px]">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b-2 border-outline-variant font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+<th class="py-3 px-4 w-[180px]">Timestamp (UTC)</th>
+<th class="py-3 px-4 w-[120px]">Vector</th>
+<th class="py-3 px-4 w-[140px]">Event Type</th>
+<th class="py-3 px-4">Detailed Description / Data Source</th>
+<th class="py-3 px-4 w-[100px] text-right">Status</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface">
+<tr class="zebra-row border-b border-surface-variant hover:bg-surface-container-highest transition-colors">
+<td class="py-3 px-4 mono-id whitespace-nowrap">2026-10-14 06:15:00</td>
+<td class="py-3 px-4"><div class="flex items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-sm">satellite_alt</span> AIS</div></td>
+<td class="py-3 px-4 font-medium">Routine Report</td>
+<td class="py-3 px-4 text-sm">Vessel MSC Ocean Star transmitting normally. Speed: 14.2kts, Heading: 105°.</td>
+<td class="py-3 px-4 text-right"><span class="chip chip-success font-label-sm text-label-sm py-0.5 px-2">Verified</span></td>
+</tr>
+<tr class="zebra-row border-b border-surface-variant hover:bg-surface-container-highest transition-colors bg-error-container/10">
+<td class="py-3 px-4 mono-id whitespace-nowrap text-[#E65100] font-semibold">2026-10-14 07:30:12</td>
+<td class="py-3 px-4"><div class="flex items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-sm">satellite_alt</span> AIS</div></td>
+<td class="py-3 px-4 font-medium">Signal Interruption</td>
+<td class="py-3 px-4 text-sm">Loss of Class A AIS transmission. No distress signals logged in area.</td>
+<td class="py-3 px-4 text-right"><span class="chip font-label-sm text-label-sm py-0.5 px-2 bg-surface-variant text-on-surface-variant">Flagged</span></td>
+</tr>
+<tr class="zebra-row border-b border-primary-container border-l-4 border-l-primary-container bg-surface-container-highest">
+<td class="py-3 px-4 mono-id whitespace-nowrap font-bold text-primary-container">2026-10-14 08:42:00</td>
+<td class="py-3 px-4"><div class="flex items-center gap-1 text-primary-container font-semibold"><span class="material-symbols-outlined text-sm">my_location</span> Derived</div></td>
+<td class="py-3 px-4 font-bold text-primary-container">Probable Origin</td>
+<td class="py-3 px-4 text-sm font-medium">Calculated T-Zero of discharge event based on reverse drift modeling of SAR slick.</td>
+<td class="py-3 px-4 text-right"><span class="chip chip-critical font-label-sm text-label-sm py-0.5 px-2">Critical</span></td>
+</tr>
+<tr class="zebra-row border-b border-surface-variant hover:bg-surface-container-highest transition-colors">
+<td class="py-3 px-4 mono-id whitespace-nowrap">2026-10-14 11:35:44</td>
+<td class="py-3 px-4"><div class="flex items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-sm">satellite_alt</span> AIS</div></td>
+<td class="py-3 px-4 font-medium">Signal Resumed</td>
+<td class="py-3 px-4 text-sm">Transmission re-established 56nm east of last known position. Speed consistent.</td>
+<td class="py-3 px-4 text-right"><span class="chip font-label-sm text-label-sm py-0.5 px-2 bg-surface-variant text-on-surface-variant">Logged</span></td>
+</tr>
+<tr class="zebra-row border-b border-surface-variant hover:bg-surface-container-highest transition-colors">
+<td class="py-3 px-4 mono-id whitespace-nowrap">2026-10-14 16:22:05</td>
+<td class="py-3 px-4"><div class="flex items-center gap-1 text-on-surface-variant"><span class="material-symbols-outlined text-sm">radar</span> Sentinel-1</div></td>
+<td class="py-3 px-4 font-medium">Initial Detection</td>
+<td class="py-3 px-4 text-sm">SAR pass detects 14nm linear slick anomaly. Automated ML classification flags as illicit.</td>
+<td class="py-3 px-4 text-right"><span class="chip chip-success font-label-sm text-label-sm py-0.5 px-2">Verified</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- 3. Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-dim fixed bottom-0 right-0 w-full md:w-[calc(100%-260px)] h-8 border-t border-outline-variant flat no shadows flex items-center justify-between px-margin-mobile md:px-margin-desktop z-50">
+<div class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-container block"></span>
+                System Health: Operational | UTC: 14:22:05 | <span class="font-bold text-secondary">Secure Session: Active</span>
+</div>
+<div class="flex gap-4">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors none" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors none" href="#">Privacy Policy</a>
+</div>
+</footer>
+</div>
+</body></html>
