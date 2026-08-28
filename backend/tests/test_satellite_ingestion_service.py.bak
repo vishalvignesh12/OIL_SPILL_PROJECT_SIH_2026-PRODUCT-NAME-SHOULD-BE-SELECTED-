@@ -1,0 +1,339 @@
+"""
+Test suite for satellite ingestion service.
+"""
+import pytest
+from unittest.mock import Mock, AsyncMock, patch
+from uuid import UUID
+from datetime import datetime, UTC
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.services.satellite_ingestion_service import (
+    validate_scene_metadata,
+    check_duplicate_scene,
+    persist_satellite_scene,
+    create_analysis_job,
+    ingest_satellite_scene
+)
+from app.schemas.scene import SceneCreate, GeoJSONPolygon
+from app.models.satellite_scene import SatelliteScene
+
+
+@pytest.mark.asyncio
+async def test_validate_scene_metadata_valid():
+    """Test validation of valid scene metadata."""
+    req = SceneCreate(
+        source="sentinel-1-replay",
+        scene_id="S1A_20250615_001",
+        satellite="Sentinel-1",
+        sensor="SAR",
+        product_type="GRD",
+        polarization="VV",
+        acquisition_time=datetime.now(UTC),
+        bbox=GeoJSONPolygon(
+            type="Polygon",
+            coordinates=[[
+                [74.0, 12.0],
+                [74.5, 12.0],
+                [74.5, 12.5],
+                [74.0, 12.5],
+                [74.0, 12.0]  # Closed ring
+            ]]
+        ),
+        image_url="http://example.com/image.tif"
+    )
+    
+    result = await validate_scene_metadata(req)
+    
+    assert result["source"] == "sentinel-1-replay"
+    assert result["scene_id"] == "S1A_20250615_001"
+    assert result["satellite"] == "Sentinel-1"
+    assert result["sensor"] == "SAR"
+    assert result["product_type"] == "GRD"
+    assert result["polarization"] == "VV"
+
+
+@pytest.mark.asyncio
+async def test_validate_scene_metadata_missing_source():
+    """Test validation fails with missing source."""
+    req = SceneCreate(
+        source="",
+        scene_id="S1A_20250615_001",
+        satellite="Sentinel-1",
+        acquisition_time=datetime.now(UTC),
+        bbox=GeoJSONPolygon(
+            type="Polygon",
+            coordinates=[[
+                [74.0, 12.0],
+                [74.5, 12.0],
+                [74.5, 12.5],
+                [74.0, 12.5],
+                [74.0, 12.0]
+            ]]
+        ),
+        image_url="http://example.com/image.tif"
+    )
+    
+    with pytest.raises(ValueError) as exc_info:
+        await validate_scene_metadata(req)
+    
+    assert "source is required" in str(exc_info.value)
+
+
+@pytest.mark.asyncio
+async def test_validate_scene_metadata_future_time():
+    """Test validation fails with time too far in future."""
+    future_time = datetime.now(UTC).replace(year=datetime.now(UTC).year + 1)
+    
+    req = SceneCreate(
+        source="sentinel-1-replay",
+        scene_id="S1A_20250615_001",
+        satellite="Sentinel-1",
+        acquisition_time=future_time,
+        bbox=GeoJSONPolygon(
+            type="Polygon",
+            coordinates=[[
+                [74.0, 12.0],
+                [74.5, 12.0],
+                [74.5, 12.5],
+                [74.0, 12.5],
+                [74.0, 12.0]
+            ]]
+        ),
+        image_url="http://example.com/image.tif"
+    )
+    
+    with pytest.raises(ValueError) as exc_info:
+        await validate_scene_metadata(req)
+    
+    assert "acquisition_time cannot be more than 1 hour in the future" in str(exc_info.value)
+
+
+@pytest.mark.asyncio
+async def test_check_duplicate_scene_no_duplicate():
+    """Test duplicate check when no duplicate exists."""
+    mock_db = AsyncMock(spec=AsyncSession)
+    mock_result = Mock()
+    mock_result.scalars().first.return_value = None
+    mock_db.execute.return_value = mock_result
+    
+    result = await check_duplicate_scene(mock_db, "sentinel-1-replay", "S1A_20250615_001")
+    
+    assert result is False
+    mock_db.execute.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_check_duplicate_scene_duplicate_exists():
+    """Test duplicate check when duplicate exists."""
+    mock_db = AsyncMock(spec=AsyncSession)
+    mock_scene = Mock(spec=SatelliteScene)
+    mock_scene.scene_id = "S1A_20250615_001"
+    mock_result = Mock()
+    mock_result.scalars().first.return_value = mock_scene
+    mock_db.execute.return_value = mock_result
+    
+    result = await check_duplicate_scene(mock_db, "sentinel-1-replay", "S1A_20250615_001")
+    
+    assert result is True
+
+
+@pytest.mark.asyncio
+async def test_persist_satellite_scene():
+    """Test persisting a satellite scene."""
+    mock_db = AsyncMock(spec=AsyncSession)
+    
+    scene_data = {
+        "source": "sentinel-1-replay",
+        "scene_id": "S1A_20250615_001",
+        "satellite": "Sentinel-1",
+        "sensor": "SAR",
+        "product_type": "GRD",
+        "polarization": "VV",
+        "acquisition_time": datetime.now(UTC),
+        "processing_time": None,
+        "bbox": GeoJSONPolygon(
+            type="Polygon",
+            coordinates=[[
+                [74.0, 12.0],
+                [74.5, 12.0],
+                [74.5, 12.5],
+                [74.0, 12.5],
+                [74.0, 12.0]
+            ]]
+        ),
+        "image_url": "http://example.com/image.tif",
+        "thumbnail_url": None,
+        "scene_metadata": {},
+        "status": "RECEIVED"
+    }
+    
+    with patch('app.services.satellite_ingestion_service.from_shape') as mock_from_shape, \
+         patch('app.services.satellite_ingestion_service.shape') as mock_shape:
+        
+        mock_shape.return_value = Mock()
+        mock_from_shape.return_value = Mock()
+        
+        result = await persist_satellite_scene(mock_db, scene_data)
+        
+        assert isinstance(result, SatelliteScene)
+        assert result.source == "sentinel-1-replay"
+        assert result.scene_id == "S1A_20250615_001"
+        assert result.satellite == "Sentinel-1"
+        mock_db.add.assert_called_once()
+        mock_db.flush.assert_called_once()
+        mock_db.refresh.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_create_analysis_job():
+    """Test analysis job creation."""
+    mock_scene = Mock(spec=SatelliteScene)
+    mock_scene.id = UUID("12345678-1234-5678-1234-567812345678")
+    
+    with patch('app.services.satellite_ingestion_service.uuid.uuid4') as mock_uuid, \
+         patch('app.services.satellite_ingestion_service.log_inference'):
+        
+        mock_uuid.return_value = UUID("87654321-4321-8765-4321-098765432109")
+        
+        result = await create_analysis_job(mock_scene)
+        
+        assert result == "87654321-4321-8765-4321-098765432109"
+
+
+@pytest.mark.asyncio
+async def test_ingest_satellite_scene_new_scene():
+    """Test ingesting a new satellite scene."""
+    mock_db = AsyncMock(spec=AsyncSession)
+    
+    req = SceneCreate(
+        source="sentinel-1-replay",
+        scene_id="S1A_20250615_001",
+        satellite="Sentinel-1",
+        acquisition_time=datetime.now(UTC),
+        bbox=GeoJSONPolygon(
+            type="Polygon",
+            coordinates=[[
+                [74.0, 12.0],
+                [74.5, 12.0],
+                [74.5, 12.5],
+                [74.0, 12.5],
+                [74.0, 12.0]
+            ]]
+        ),
+        image_url="http://example.com/image.tif"
+    )
+    
+    # Mock the validation to return valid data
+    validated_data = {
+        "source": "sentinel-1-replay",
+        "scene_id": "S1A_20250615_001",
+        "satellite": "Sentinel-1",
+        "sensor": None,
+        "product_type": "GRD",
+        "polarization": None,
+        "acquisition_time": datetime.now(UTC),
+        "processing_time": None,
+        "bbox": req.bbox,
+        "image_url": "http://example.com/image.tif",
+        "thumbnail_url": None,
+        "scene_metadata": {},
+        "status": "RECEIVED"
+    }
+    
+    with patch('app.services.satellite_ingestion_service.validate_scene_metadata', return_value=validated_data), \
+         patch('app.services.satellite_ingestion_service.check_duplicate_scene', return_value=False), \
+         patch('app.services.satellite_ingestion_service.persist_satellite_scene') as mock_persist, \
+         patch('app.services.satellite_ingestion_service.create_analysis_job', return_value="test-analysis-id"), \
+         patch('app.services.satellite_ingestion_service.log_inference'):
+        
+        mock_scene = Mock(spec=SatelliteScene)
+        mock_scene.scene_id = "S1A_20250615_001"
+        mock_scene.id = UUID("12345678-1234-5678-1234-567812345678")
+        mock_scene.status = "QUEUED"
+        mock_persist.return_value = mock_scene
+        
+        result = await ingest_satellite_scene(mock_db, req)
+        
+        assert result["success"] is True
+        assert result["scene_id"] == "S1A_20250615_001"
+        assert result["analysis_id"] == "test-analysis-id"
+        assert result["status"] == "QUEUED"
+        assert result["is_duplicate"] is False
+        assert "Satellite scene successfully ingested" in result["message"]
+        
+        # Verify that the scene status was updated to QUEUED
+        assert mock_scene.status == "QUEUED"
+        mock_db.commit.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_ingest_satellite_scene_duplicate():
+    """Test ingesting a duplicate satellite scene."""
+    mock_db = AsyncMock(spec=AsyncSession)
+    
+    req = SceneCreate(
+        source="sentinel-1-replay",
+        scene_id="S1A_20250615_001",
+        satellite="Sentinel-1",
+        acquisition_time=datetime.now(UTC),
+        bbox=GeoJSONPolygon(
+            type="Polygon",
+            coordinates=[[
+                [74.0, 12.0],
+                [74.5, 12.0],
+                [74.5, 12.5],
+                [74.0, 12.5],
+                [74.0, 12.0]
+            ]]
+        ),
+        image_url="http://example.com/image.tif"
+    )
+    
+    # Mock the validation to return valid data
+    validated_data = {
+        "source": "sentinel-1-replay",
+        "scene_id": "S1A_20250615_001",
+        "satellite": "Sentinel-1",
+        "sensor": None,
+        "product_type": "GRD",
+        "polarization": None,
+        "acquisition_time": datetime.now(UTC),
+        "processing_time": None,
+        "bbox": req.bbox,
+        "image_url": "http://example.com/image.tif",
+        "thumbnail_url": None,
+        "scene_metadata": {},
+        "status": "RECEIVED"
+    }
+    
+    # Mock existing scene
+    mock_existing_scene = Mock(spec=SatelliteScene)
+    mock_existing_scene.scene_id = "S1A_20250615_001"
+    mock_existing_scene.id = UUID("12345678-1234-5678-1234-567812345678")
+    mock_existing_scene.status = "INGESTED"
+    
+    with patch('app.services.satellite_ingestion_service.validate_scene_metadata', return_value=validated_data), \
+         patch('app.services.satellite_ingestion_service.check_duplicate_scene', return_value=True), \
+         patch('app.services.satellite_ingestion_service.select') as mock_select:
+        
+        # Mock the select query for duplicate check
+        mock_result = Mock()
+        mock_result.scalars().first.return_value = mock_existing_scene
+        mock_db.execute.return_value = mock_result
+        
+        result = await ingest_satellite_scene(mock_db, req)
+        
+        assert result["success"] is True
+        assert result["scene_id"] == "S1A_20250615_001"
+        assert result["analysis_id"] == f"existing_{mock_existing_scene.id}"
+        assert result["status"] == "INGESTED"
+        assert result["is_duplicate"] is True
+        assert "already exists" in result["message"]
+        
+        # Verify that the existing scene's timestamp was updated
+        assert mock_existing_scene.updated_at == datetime.now(UTC)
+        mock_db.commit.assert_called_once()
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])

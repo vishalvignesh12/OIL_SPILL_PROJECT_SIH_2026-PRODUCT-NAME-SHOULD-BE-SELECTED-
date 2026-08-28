@@ -1,0 +1,73 @@
+"""Add satellite ingestion fields to SatelliteScene model
+
+Revision ID: 00560fe96b5e
+Revises: 001
+Create Date: 2026-08-28 21:41:57.637292
+
+"""
+from typing import Sequence, Union
+
+from alembic import op
+import sqlalchemy as sa
+from geoalchemy2.types import Geometry
+
+
+# revision identifiers, used by Alembic.
+revision: str = '00560fe96b5e_add_satellite_ingestion_fields_to_.py'
+down_revision: Union[str, Sequence[str], None] = '001'
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[Sequence[str], None] = None
+
+
+def upgrade() -> None:
+    """Upgrade schema."""
+    # Add new columns to satellite_scenes table as nullable first
+    op.add_column('satellite_scenes', sa.Column('source', sa.String(), nullable=True))
+    op.add_column('satellite_scenes', sa.Column('scene_id', sa.String(), nullable=True))
+    op.add_column('satellite_scenes', sa.Column('sensor', sa.String(), nullable=True))
+    op.add_column('satellite_scenes', sa.Column('acquisition_time', sa.DateTime(), nullable=True))
+    op.add_column('satellite_scenes', sa.Column('processing_time', sa.DateTime(), nullable=True))
+    op.add_column('satellite_scenes', sa.Column('scene_metadata', sa.JSON(), nullable=True))
+    op.add_column('satellite_scenes', sa.Column('status', sa.String(), nullable=False, server_default='RECEIVED'))
+    op.add_column('satellite_scenes', sa.Column('updated_at', sa.DateTime(), nullable=False,
+                                               server_default=sa.text('now()')))
+
+    # Populate acquisition_time from existing timestamp column
+    op.execute("UPDATE satellite_scenes SET acquisition_time = timestamp WHERE acquisition_time IS NULL")
+
+    # Make acquisition_time NOT NULL since we've populated it from timestamp
+    op.alter_column('satellite_scenes', 'acquisition_time', nullable=False)
+
+    # NOTE: source and scene_id remain nullable in this migration to allow existing data
+    # They should be populated and made NOT NULL in a follow-up migration
+
+    # Add unique constraint
+    op.create_unique_constraint('uix_source_scene_id', 'satellite_scenes', ['source', 'scene_id'])
+
+    # Add indexes
+    op.create_index('ix_satellite_scene_acquisition_time', 'satellite_scenes', ['acquisition_time'])
+    op.create_index('ix_satellite_scene_status', 'satellite_scenes', ['status'])
+
+
+def downgrade() -> None:
+    """Downgrade schema."""
+    # Drop indexes
+    op.drop_index('ix_satellite_scene_status', table_name='satellite_scenes')
+    op.drop_index('ix_satellite_scene_acquisition_time', table_name='satellite_scenes')
+
+    # Drop unique constraint
+    op.drop_constraint('uix_source_scene_id', 'satellite_scenes', type_='unique')
+
+    # Drop columns (in reverse order of addition)
+    op.drop_column('satellite_scenes', 'updated_at')
+    op.drop_column('satellite_scenes', 'status')
+    op.drop_column('satellite_scenes', 'scene_metadata')
+    op.drop_column('satellite_scenes', 'processing_time')
+    op.drop_column('satellite_scenes', 'acquisition_time')
+    op.drop_column('satellite_scenes', 'sensor')
+    op.drop_column('satellite_scenes', 'scene_id')
+    op.drop_column('satellite_scenes', 'source')
+
+    # Note: If we had renamed acquisition_time back to timestamp in a more complex downgrade,
+    # we would need to handle that here, but since we're keeping acquisition_time as the
+    # column name, no additional steps are needed.

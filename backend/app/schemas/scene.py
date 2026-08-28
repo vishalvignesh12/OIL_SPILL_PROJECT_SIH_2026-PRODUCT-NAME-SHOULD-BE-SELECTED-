@@ -1,31 +1,34 @@
 from datetime import datetime
-from typing import Optional, List, Literal, Tuple
+from typing import Optional, List, Literal, Tuple, Dict, Any
 from uuid import UUID
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class GeoJSONPolygon(BaseModel):
     type: Literal["Polygon"] = "Polygon"
     coordinates: List[List[Tuple[float, float]]]
 
-class SceneCreate(BaseModel):
+class SceneBase(BaseModel):
+    source: str
+    scene_id: str
     satellite: str
+    sensor: Optional[str] = None
     product_type: str
-    polarization: str
-    timestamp: datetime
+    polarization: Optional[str] = None
+    acquisition_time: datetime
+    processing_time: Optional[datetime] = None
     bbox: GeoJSONPolygon
     image_url: Optional[str] = None
     thumbnail_url: Optional[str] = None
+    scene_metadata: Optional[Dict[str, Any]] = None
+    status: Optional[str] = None
 
-class SceneResponse(BaseModel):
+class SceneCreate(SceneBase):
+    pass
+
+class SceneResponse(SceneBase):
     id: UUID
-    satellite: str
-    product_type: str
-    polarization: str
-    timestamp: datetime
-    bbox: GeoJSONPolygon
-    image_url: Optional[str]
-    thumbnail_url: Optional[str]
     created_at: datetime
+    updated_at: datetime
 
     class Config:
         from_attributes = True
