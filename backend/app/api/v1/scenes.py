@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from uuid import UUID
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from geoalchemy2.shape import from_shape, to_shape
@@ -11,6 +11,7 @@ from app.core.security import require_analyst
 from app.models.satellite_scene import SatelliteScene
 from app.schemas.scene import SceneCreate, SceneResponse
 from app.services.investigation_service import to_geojson_polygon
+from app.services.satellite_ingestion_service import ingest_satellite_scene
 
 router = APIRouter(prefix="/scenes", tags=["Satellite Scenes"], dependencies=[Depends(require_analyst)])
 
@@ -60,7 +61,7 @@ async def get_scene(id: UUID, db: AsyncSession = Depends(get_db)):
 async def create_scene(req: SceneCreate, db: AsyncSession = Depends(get_db)):
     """Register metadata for a new satellite scene (protected)."""
     geom = from_shape(shape(req.bbox.model_dump()), srid=4326)
-    
+
     s = SatelliteScene(
         satellite=req.satellite,
         product_type=req.product_type,
@@ -73,7 +74,7 @@ async def create_scene(req: SceneCreate, db: AsyncSession = Depends(get_db)):
     db.add(s)
     await db.commit()
     await db.refresh(s)
-    
+
     return SceneResponse(
         id=s.id,
         satellite=s.satellite,
@@ -85,3 +86,25 @@ async def create_scene(req: SceneCreate, db: AsyncSession = Depends(get_db)):
         thumbnail_url=s.thumbnail_url,
         created_at=s.created_at
     )
+
+
+@router.post("/ingest", response_model=Dict[str, Any], status_code=status.HTTP_202_ACCEPTED)
+async def ingest_scene(
+    req: SceneCreate,
+    background_tasks: BackgroundTasks,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Ingest a satellite scene from external source (e.g., replay system).
+    Validates metadata, checks for duplicates, persists scene, and creates analysis job.
+    This endpoint does NOT wait for AI inference to complete.
+    """
+    try:
+        result = await ingest_satellite_scene(db, req)
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
+
+    # Add background task for any post-processing if needed
+    # background_tasks.add_task(some_post_process_function, result)
+
+    return result

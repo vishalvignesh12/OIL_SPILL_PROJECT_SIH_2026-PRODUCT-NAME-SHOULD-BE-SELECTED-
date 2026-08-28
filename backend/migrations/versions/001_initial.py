@@ -18,6 +18,9 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
+    # Enable PostGIS extension
+    op.execute("CREATE EXTENSION IF NOT EXISTS postgis")
+
     # 1. users
     op.create_table(
         'users',
@@ -191,3 +194,5 @@ def downgrade() -> None:
     op.drop_table('incidents')
     op.drop_index(op.f('ix_users_email'), table_name='users')
     op.drop_table('users')
+    # Disable PostGIS extension
+    op.execute("DROP EXTENSION IF EXISTS postgis")
