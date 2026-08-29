@@ -49,6 +49,7 @@ def log_inference(
     service_name: str,
     model_name: str,
     model_version: str,
+    analysis_id: str,
     incident_id: str,
     latency_ms: float,
     status_code: int,
