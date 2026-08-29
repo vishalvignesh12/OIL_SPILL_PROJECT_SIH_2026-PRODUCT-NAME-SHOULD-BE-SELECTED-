@@ -3,7 +3,7 @@ Unit tests for the detection service.
 """
 import pytest
 from unittest.mock import Mock, AsyncMock, patch
-from uuid import uuid4
+from uuid import uuid4, UUID
 from datetime import datetime, UTC
 
 from app.services.detection_service import analyze_slick
@@ -11,6 +11,63 @@ from app.models.slick_detection import SlickDetection
 from app.models.incident import Incident
 from app.models.satellite_scene import SatelliteScene
 from app.schemas.detection import AnalyzeRequest
+
+
+def make_db_result(value):
+    """Create a mock database result."""
+    result = Mock()
+    result.scalars.return_value.first.return_value = value
+    result.scalar_one_or_none.return_value = value
+    return result
+
+
+def detection_result():
+    """Return a sample detection result in PRD format."""
+    return {
+        "analysis_id": "ANL_0001",
+        "scene_id": "test_scene_001",
+        "status": "COMPLETED",
+        "oil_spill_detected": True,
+        "confidence": 0.94,
+        "model_version": "test-v1",
+        "processing_time_ms": 100,
+        "source_scene_id": "test_scene_001",
+        "length_km": 8.21,
+        "width_km": 1.42,
+        "orientation_deg": 73.0,
+        "age_estimate_hours": 18.0,
+        "age_confidence": "HIGH",
+        "spill_regions": [
+            {
+                "region_id": "region_001",
+                "confidence": 0.94,
+                "area_m2": 12420000.0,  # 12.42 km2 in m2
+                "centroid": {
+                    "lat": 9.828,
+                    "lon": 76.118
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [[
+                        [76.10, 9.80],
+                        [76.12, 9.81],
+                        [76.15, 9.85],
+                        [76.13, 9.86],
+                        [76.09, 9.82],
+                        [76.10, 9.80]  # Closed polygon
+                    ]]
+                },
+                "bbox": {
+                    "min_lat": 9.80,
+                    "min_lon": 76.09,
+                    "max_lat": 9.86,
+                    "max_lon": 76.15
+                },
+                "mask_uri": "storage://predictions/test_scene_001_mask.png",
+                "prediction_uri": "storage://predictions/test_scene_001_prediction.geojson"
+            }
+        ]
+    }
 
 
 def _stmt_target_type(stmt):
@@ -106,6 +163,7 @@ async def test_analyze_slick_uses_existing_incident_and_scene():
     # Mock existing incident and scene
     existing_incident = Mock(spec=Incident)
     existing_incident.id = existing_incident_id
+    existing_incident.name = f"Incident for Scene {existing_scene_id}"
 
     existing_scene = Mock(spec=SatelliteScene)
     existing_scene.id = existing_scene_id

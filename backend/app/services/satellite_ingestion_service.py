@@ -260,6 +260,7 @@ async def ingest_satellite_scene(db: AsyncSession, req: SceneCreate) -> Dict[str
             service_name="satellite_ingestion_service",
             model_name="FixtureSceneIngestion",
             model_version="v1.0.0",
+            analysis_id="",
             incident_id="",
             latency_ms=0,
             status_code=500
