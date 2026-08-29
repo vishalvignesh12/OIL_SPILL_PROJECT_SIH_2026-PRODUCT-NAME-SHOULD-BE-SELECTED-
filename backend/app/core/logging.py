@@ -2,7 +2,7 @@ import json
 import logging
 import time
 from contextvars import ContextVar
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 from typing import Any, Dict
 
 # Context variables to track request scope metadata
@@ -13,7 +13,7 @@ class JSONFormatter(logging.Formatter):
     """Custom formatter to emit structured logs in JSON format."""
     def format(self, record: logging.LogRecord) -> str:
         log_data: Dict[str, Any] = {
-            "timestamp": datetime.now(UTC).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "level": record.levelname,
             "message": record.getMessage(),
             "request_id": request_id_var.get(),

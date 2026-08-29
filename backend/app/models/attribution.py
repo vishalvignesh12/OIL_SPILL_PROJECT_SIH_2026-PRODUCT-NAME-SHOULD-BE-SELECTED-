@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, ForeignKey, Boolean, Text
 from sqlalchemy.dialects.postgresql import UUID
 from app.core.database import Base
@@ -17,4 +17,4 @@ class AttributionScore(Base):
     anomaly_score = Column(Float, nullable=False) # AIS gap [0, 1]
     anomaly_flag = Column(Boolean, nullable=False, default=False)
     explanation = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=lambda: datetime.now(UTC), nullable=False)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)

@@ -12,6 +12,7 @@ from geoalchemy2.shape import to_shape, from_shape
 from shapely.geometry import Polygon, MultiPolygon, shape, mapping
 from shapely.validation import make_valid
 from shapely.geometry.base import BaseGeometry
+from sqlalchemy import select
 
 from app.core.database import get_db
 from app.models.slick_detection import SlickDetection

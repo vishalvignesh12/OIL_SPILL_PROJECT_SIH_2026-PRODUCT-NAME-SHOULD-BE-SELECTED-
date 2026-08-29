@@ -1,6 +1,9 @@
 import os
 from typing import List
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field
+
+load_dotenv()
 
 class Settings(BaseModel):
     PROJECT_NAME: str = Field(default_factory=lambda: os.getenv(

@@ -1,5 +1,5 @@
 import time
-from datetime import datetime, UTC
+from datetime import datetime, UTC, timezone
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -236,14 +236,14 @@ async def _get_or_create_scene(db: AsyncSession, scene_id: str, ml_result: dict)
         bbox_coords = _extract_bbox_from_ml_result(ml_result, scene_id)
 
         scene = SatelliteScene(
-            source=ml_result.get("source", "satellite-ml"),
+            source="sentinel-1-replay",
             scene_id=scene_id,
-            satellite=ml_result.get("satellite", "Unknown"),
-            sensor=ml_result.get("sensor", "SAR"),
-            product_type=ml_result.get("product_type", "GRD"),
-            polarization=ml_result.get("polarization", "VV"),
-            acquisition_time=acquisition_time,
-            processing_time=datetime.now(UTC),
+            satellite="Sentinel-1",
+            sensor="SAR",
+            product_type="GRD",
+            polarization="VV",
+            acquisition_time=ml_result.get("acquisition_time", datetime.now(UTC)),
+            processing_time=datetime.now(timezone.utc),
             bbox=from_shape(shape({
                 "type": "Polygon",
                 "coordinates": [bbox_coords]

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Any
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -23,7 +23,7 @@ async def get_system_metrics(
     """Get system-wide metrics and KPIs for dashboard overview."""
 
     # Count active incidents (last 7 days)
-    week_ago = datetime.utcnow() - timedelta(days=7)
+    week_ago = datetime.now(timezone.utc) - timedelta(days=7)
     active_incidents_stmt = select(func.count(Incident.id)).where(
         and_(Incident.timestamp >= week_ago, Incident.status != "Closed / Actioned")
     )
@@ -59,7 +59,7 @@ async def get_system_metrics(
     attribution_rate = (attributed_detections / total_detections) * 100 if total_detections > 0 else 0
 
     # Count monitored vessels (vessels with recent AIS tracks)
-    day_ago = datetime.utcnow() - timedelta(days=1)
+    day_ago = datetime.now(timezone.utc) - timedelta(days=1)
     monitored_vessels_stmt = select(func.count(func.distinct(AISTrack.vessel_id))).where(
         AISTrack.timestamp >= day_ago
     )
@@ -138,7 +138,7 @@ async def get_security_alerts(
         {
             "id": "ALT-20260827010",
             "incidentId": str(recent_attributions[0].incident_id) if recent_attributions else "INC-2026-001",
-            "timestamp": (datetime.utcnow() - timedelta(minutes=10)).isoformat().replace("+00:00", " UTC"),
+            "timestamp": (datetime.now(timezone.utc) - timedelta(minutes=10)).isoformat().replace("+00:00", " UTC"),
             "severity": "Critical",
             "title": "Satellite SAR Anomaly Detection — Bay of Bengal",
             "description": "Sentinel-1A pass captured 46.8 km² slick polygon at 14°49'17\"N, 88°17'29\"E.",
@@ -148,7 +148,7 @@ async def get_security_alerts(
         {
             "id": "ALT-20260827011",
             "incidentId": str(recent_attributions[0].incident_id) if recent_attributions else "INC-2026-001",
-            "timestamp": (datetime.utcnow() - timedelta(hours=2)).isoformat().replace("+00:00", " UTC"),
+            "timestamp": (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat().replace("+00:00", " UTC"),
             "severity": "High",
             "title": "Potential Bilge Dump in Arabian Sea EEZ Boundary",
             "description": "Synthetic aperture radar detected 18.2 km² plume along international shipping lane.",

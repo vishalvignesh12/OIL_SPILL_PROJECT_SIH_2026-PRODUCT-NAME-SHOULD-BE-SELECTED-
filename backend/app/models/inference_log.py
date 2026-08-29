@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, Integer, JSON
 from sqlalchemy.dialects.postgresql import UUID
 from app.core.database import Base
@@ -15,4 +15,4 @@ class MLInferenceLog(Base):
     model_version = Column(String, nullable=True)
     latency_ms = Column(Integer, nullable=True)
     status = Column(String, nullable=False) # SUCCESS, FAILED
-    timestamp = Column(DateTime, default=lambda: datetime.now(UTC), nullable=False)
+    timestamp = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)

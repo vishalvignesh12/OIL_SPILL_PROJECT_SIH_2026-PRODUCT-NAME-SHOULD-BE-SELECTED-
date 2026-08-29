@@ -20,6 +20,28 @@ config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
 target_metadata = Base.metadata
 
+def include_object(object, name, type_, reflected, compare_to):
+    """Filter out PostGIS extension system tables and reflected spatial indexes from autogenerate/check."""
+    if type_ == "table":
+        app_tables = {
+            "incidents", "users", "vessels", "ais_tracks", "satellite_scenes",
+            "slick_detections", "drift_results", "attribution_scores", "ml_inference_log",
+            "alembic_version"
+        }
+        if name not in app_tables:
+            return False
+    if type_ == "index" and reflected:
+        # Ignore reflected PostGIS spatial indexes
+        if name in {
+            "ix_scenes_bbox", "ix_incidents_location", "ix_ais_tracks_position",
+            "ix_slick_detections_geometry", "ix_drift_results_origin_point",
+            "street_type_lookup_abbrev_idx", "direction_lookup_abbrev_idx",
+            "idx_tiger_county", "countysub_lookup_name_idx", "countysub_lookup_state_idx",
+            "secondary_unit_lookup_abbrev_idx", "tige_cousub_the_geom_gist"
+        }:
+            return False
+    return True
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
     url = config.get_main_option("sqlalchemy.url")
@@ -28,13 +50,18 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        include_object=include_object,
     )
 
     with context.begin_transaction():
         context.run_migrations()
 
 def do_run_migrations(connection) -> None:
-    context.configure(connection=connection, target_metadata=target_metadata)
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        include_object=include_object,
+    )
 
     with context.begin_transaction():
         context.run_migrations()
