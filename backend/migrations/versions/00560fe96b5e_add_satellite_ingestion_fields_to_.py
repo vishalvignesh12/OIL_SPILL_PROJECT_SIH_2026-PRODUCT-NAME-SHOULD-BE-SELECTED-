@@ -13,7 +13,7 @@ from geoalchemy2.types import Geometry
 
 
 # revision identifiers, used by Alembic.
-revision: str = '00560fe96b5e_add_satellite_ingestion_fields_to_.py'
+revision: str = '00560fe96b5e'
 down_revision: Union[str, Sequence[str], None] = '001'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[Sequence[str], None] = None

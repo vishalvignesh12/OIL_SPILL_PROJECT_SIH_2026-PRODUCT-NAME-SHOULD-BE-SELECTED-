@@ -5,7 +5,7 @@ from app.core.security import get_current_user
 from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse, UserResponse
 from app.services.auth_service import register_user, authenticate_user
 
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -29,5 +29,5 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         name=current_user["name"],
         email=current_user["email"],
         role=current_user["role"],
-        created_at=datetime.now(UTC)
+        created_at=datetime.now(timezone.utc)
     )

@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, Float, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from geoalchemy2 import Geometry
@@ -19,4 +19,4 @@ class SlickDetection(Base):
     confidence = Column(Float, nullable=False) # 0 to 1
     age_estimate_hours = Column(Float, nullable=True)
     age_confidence = Column(String, nullable=True) # HIGH, MEDIUM, LOW
-    created_at = Column(DateTime, default=lambda: datetime.now(UTC), nullable=False)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)

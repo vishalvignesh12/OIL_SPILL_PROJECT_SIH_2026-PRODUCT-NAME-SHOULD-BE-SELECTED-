@@ -1,6 +1,6 @@
 import uuid
 import hashlib
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -32,7 +32,7 @@ async def validate_scene_metadata(req: SceneCreate) -> Dict[str, Any]:
         errors.append("scene_id is required and cannot be empty")
 
     # Validate acquisition_time (should not be too far in the future)
-    now = datetime.now(UTC)
+    now = datetime.now(timezone.utc)
     if req.acquisition_time > now:
         # Allow some tolerance for clock differences
         time_diff = req.acquisition_time - now
@@ -217,7 +217,7 @@ async def ingest_satellite_scene(db: AsyncSession, req: SceneCreate) -> Dict[str
 
             if existing_scene:
                 # Update the timestamp to show when it was re-received
-                existing_scene.updated_at = datetime.now(UTC)
+                existing_scene.updated_at = datetime.now(timezone.utc)
                 await db.commit()
                 await db.refresh(existing_scene)
 
@@ -238,7 +238,7 @@ async def ingest_satellite_scene(db: AsyncSession, req: SceneCreate) -> Dict[str
 
         # Step 5: Update scene status to indicate it's queued for analysis
         scene.status = "QUEUED"
-        scene.updated_at = datetime.now(UTC)
+        scene.updated_at = datetime.now(timezone.utc)
 
         # Commit all changes
         await db.commit()
