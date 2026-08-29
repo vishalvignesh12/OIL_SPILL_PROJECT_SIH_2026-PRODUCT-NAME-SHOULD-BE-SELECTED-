@@ -1,5 +1,5 @@
 import time
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from geoalchemy2.shape import from_shape
@@ -48,7 +48,7 @@ async def calculate_hindcast(db: AsyncSession, req: HindcastRequest) -> DriftRes
         model_version="v1.10.4",
         latency_ms=latency_ms,
         status="SUCCESS",
-        timestamp=datetime.now(UTC)
+        timestamp=datetime.now(timezone.utc)
     )
     db.add(log)
     await db.commit()
@@ -100,7 +100,7 @@ async def calculate_forecast(db: AsyncSession, req: ForecastRequest) -> DriftRes
         model_version="v1.10.4",
         latency_ms=latency_ms,
         status="SUCCESS",
-        timestamp=datetime.now(UTC)
+        timestamp=datetime.now(timezone.utc)
     )
     db.add(log)
     await db.commit()

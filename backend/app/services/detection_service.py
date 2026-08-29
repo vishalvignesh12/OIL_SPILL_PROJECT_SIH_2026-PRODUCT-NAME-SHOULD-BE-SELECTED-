@@ -1,5 +1,5 @@
 import time
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -65,7 +65,7 @@ async def analyze_slick(db: AsyncSession, req: AnalyzeRequest) -> SlickDetection
             product_type="GRD",
             polarization="VV",
             acquisition_time=req.timestamp,
-            processing_time=datetime.now(UTC),
+            processing_time=datetime.now(timezone.utc),
             bbox=from_shape(shape({
                 "type": "Polygon",
                 "coordinates": [[
