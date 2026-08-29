@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from app.schemas.scene import GeoJSONPolygon
 
 class AnalyzeRequest(BaseModel):
@@ -10,6 +10,8 @@ class AnalyzeRequest(BaseModel):
     timestamp: datetime
 
 class DetectionResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     detection_id: UUID
     slick_polygon: GeoJSONPolygon
     area_km2: float
@@ -19,6 +21,3 @@ class DetectionResponse(BaseModel):
     confidence: float = Field(..., ge=0.0, le=1.0)
     age_estimate_hours: Optional[float] = None
     age_confidence: Optional[str] = None # HIGH, MEDIUM, LOW
-
-    class Config:
-        from_attributes = True

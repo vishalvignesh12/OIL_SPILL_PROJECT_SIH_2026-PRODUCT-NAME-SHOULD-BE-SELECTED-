@@ -3,6 +3,19 @@ from typing import List
 from pydantic import BaseModel, Field
 
 class Settings(BaseModel):
+    PROJECT_NAME: str = Field(default_factory=lambda: os.getenv(
+        "PROJECT_NAME", "Oil Spill Detection & AIS Attribution Platform API"
+    ))
+    APP_NAME: str = Field(default_factory=lambda: os.getenv(
+        "APP_NAME", "Oil Spill Detection & AIS Attribution Platform API"
+    ))
+    VERSION: str = Field(default_factory=lambda: os.getenv(
+        "VERSION", "1.0.0"
+    ))
+    API_V1_STR: str = Field(default_factory=lambda: os.getenv(
+        "API_V1_STR", "/api/v1"
+    ))
+    
     DATABASE_URL: str = Field(default_factory=lambda: os.getenv(
         "DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/oil_spill"
     ))

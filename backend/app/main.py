@@ -27,7 +27,37 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
 # Exception handlers for standard error envelope per PRD §36
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request: Request, exc: StarletteHTTPException):
+    """Override default HTTP exceptions to use standard JSON error envelope per PRD §36."""
+    code_map = {
+        status.HTTP_401_UNAUTHORIZED: "UNAUTHORIZED",
+        status.HTTP_403_FORBIDDEN: "FORBIDDEN",
+        status.HTTP_404_NOT_FOUND: "NOT_FOUND",
+        status.HTTP_409_CONFLICT: "CONFLICT",
+        status.HTTP_422_UNPROCESSABLE_ENTITY: "VALIDATION_ERROR",
+        status.HTTP_500_INTERNAL_SERVER_ERROR: "INTERNAL_ERROR",
+    }
+    code = code_map.get(exc.status_code, "HTTP_ERROR")
+    message = str(exc.detail) if exc.detail else "An error occurred"
+    if exc.status_code == status.HTTP_401_UNAUTHORIZED and message == "Not authenticated":
+        message = "Could not validate credentials"
+        code = "UNAUTHORIZED"
+
+    return JSONResponse(
+        status_code=exc.status_code,
+        headers=exc.headers,
+        content={
+            "error": {
+                "code": code,
+                "message": message
+            }
+        }
+    )
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     """Override default validation errors to use the standard JSON envelope."""

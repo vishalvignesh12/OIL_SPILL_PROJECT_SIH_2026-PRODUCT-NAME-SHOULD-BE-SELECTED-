@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, List, Literal, Tuple, Union
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from app.schemas.incident import GeoJSONPoint
 from app.schemas.scene import GeoJSONPolygon
 
@@ -20,12 +20,11 @@ class ForecastRequest(BaseModel):
     timestamp: datetime
 
 class DriftResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     origin_point: Optional[GeoJSONPoint] = None
     origin_probability_cone: Optional[GeoJSONPolygon] = None
     origin_time_estimate: Optional[datetime] = None
     origin_confidence: Optional[float] = Field(None, ge=0.0, le=1.0)
     hindcast_path: Optional[GeoJSONLineString] = None
     forward_path: Optional[GeoJSONLineString] = None
-
-    class Config:
-        from_attributes = True
