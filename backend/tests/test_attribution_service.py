@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock, AsyncMock, patch
-from uuid import uuid4
+from uuid import uuid4, UUID
 from datetime import datetime, timedelta, UTC
 from shapely.geometry import Point
 

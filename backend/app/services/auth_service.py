@@ -1,6 +1,7 @@
 from datetime import timedelta
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.exc import SQLAlchemyError, DBAPIError
 from fastapi import HTTPException, status
 from app.models.user import User
 from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse
@@ -8,10 +9,18 @@ from app.core.security import hash_password, verify_password, create_access_toke
 
 async def register_user(db: AsyncSession, req: RegisterRequest) -> User:
     """Register a new user, checking for email uniqueness."""
-    # Check if email exists
-    stmt = select(User).where(User.email == req.email)
-    res = await db.execute(stmt)
-    existing_user = res.scalars().first()
+    try:
+        # Check if email exists
+        stmt = select(User).where(User.email == req.email)
+        res = await db.execute(stmt)
+        existing_user = res.scalars().first()
+    except HTTPException:
+        raise
+    except (SQLAlchemyError, DBAPIError, OSError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Database error"
+        )
     
     if existing_user:
         raise HTTPException(
@@ -26,16 +35,30 @@ async def register_user(db: AsyncSession, req: RegisterRequest) -> User:
         password_hash=hashed,
         role="analyst" # default role for new registrations
     )
-    db.add(user)
-    await db.commit()
-    await db.refresh(user)
+    try:
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+    except (SQLAlchemyError, DBAPIError, OSError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Database error"
+        )
     return user
 
 async def authenticate_user(db: AsyncSession, req: LoginRequest) -> TokenResponse:
     """Authenticate credentials and generate JWT."""
-    stmt = select(User).where(User.email == req.email)
-    res = await db.execute(stmt)
-    user = res.scalars().first()
+    try:
+        stmt = select(User).where(User.email == req.email)
+        res = await db.execute(stmt)
+        user = res.scalars().first()
+    except HTTPException:
+        raise
+    except (SQLAlchemyError, DBAPIError, OSError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Database error"
+        )
     
     if not user or not verify_password(req.password, user.password_hash):
         raise HTTPException(

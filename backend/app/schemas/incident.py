@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, List, Literal, Tuple
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 class GeoJSONPoint(BaseModel):
     type: Literal["Point"] = "Point"
@@ -15,6 +15,8 @@ class IncidentCreate(BaseModel):
     status: str = "DETECTED"
 
 class IncidentResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: UUID
     name: str
     description: Optional[str]
@@ -23,6 +25,3 @@ class IncidentResponse(BaseModel):
     status: str
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True

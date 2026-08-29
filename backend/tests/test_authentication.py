@@ -3,11 +3,11 @@ Authentication system tests to prevent demo breakage.
 Tests user registration, login, and protected access.
 """
 import pytest
-from unittest.mock import AsyncMock, patch
+from unittest.mock import Mock, AsyncMock, patch
 from uuid import uuid4
 from datetime import datetime, UTC
 
-from httpx import AsyncClient
+from httpx import AsyncClient, ASGITransport
 
 from app.main import app
 from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse, UserResponse
@@ -18,7 +18,7 @@ from app.core.security import hash_password, verify_password, create_access_toke
 @pytest.mark.asyncio
 async def test_auth_router_exists():
     """Test that auth router is properly included in the app."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         # Test that auth endpoints exist
         response = await client.get("/api/v1/auth/register")
         # Should return 405 (Method Not Allowed) for GET on POST endpoint, not 404
@@ -34,7 +34,7 @@ async def test_auth_router_exists():
 @pytest.mark.asyncio
 async def test_register_endpoint_validation():
     """Test user registration endpoint validation."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         # Test missing fields
         response = await client.post("/api/v1/auth/register", json={})
         assert response.status_code == 422  # Validation error
@@ -61,7 +61,7 @@ async def test_register_endpoint_validation():
 @pytest.mark.asyncio
 async def test_login_endpoint_validation():
     """Test user login endpoint validation."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         # Test missing fields
         response = await client.post("/api/v1/auth/login", json={})
         assert response.status_code == 422  # Validation error
@@ -77,7 +77,7 @@ async def test_login_endpoint_validation():
 @pytest.mark.asyncio
 async def test_protected_endpoint_without_token():
     """Test that protected endpoints require authentication."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.get("/api/v1/auth/me")
         # Should return 401 (Unauthorized) not 404
         assert response.status_code == 401
@@ -136,12 +136,12 @@ async def test_register_user_service_logic():
     mock_db = AsyncMock()
 
     # Mock no existing user
-    mock_result = AsyncMock()
+    mock_result = Mock()
     mock_result.scalars.return_value.first.return_value = None
     mock_db.execute.return_value = mock_result
     mock_db.commit = AsyncMock()
     mock_db.refresh = AsyncMock()
-    mock_db.add = AsyncMock()
+    mock_db.add = Mock()
 
     # Setup request
     req = RegisterRequest(
@@ -185,7 +185,7 @@ async def test_register_user_duplicate_email():
         role="analyst"
     )
 
-    mock_result = AsyncMock()
+    mock_result = Mock()
     mock_result.scalars.return_value.first.return_value = existing_user
     mock_db.execute.return_value = mock_result
 
@@ -223,7 +223,7 @@ async def test_authenticate_user_service_logic():
         role="analyst"
     )
 
-    mock_result = AsyncMock()
+    mock_result = Mock()
     mock_result.scalars.return_value.first.return_value = existing_user
     mock_db.execute.return_value = mock_result
 
@@ -254,7 +254,7 @@ async def test_authenticate_user_invalid_credentials():
     mock_db = AsyncMock()
 
     # Mock no user found
-    mock_result = AsyncMock()
+    mock_result = Mock()
     mock_result.scalars.return_value.first.return_value = None
     mock_db.execute.return_value = mock_result
 
@@ -288,7 +288,7 @@ async def test_authenticate_user_wrong_password():
         role="analyst"
     )
 
-    mock_result = AsyncMock()
+    mock_result = Mock()
     mock_result.scalars.return_value.first.return_value = existing_user
     mock_db.execute.return_value = mock_result
 
@@ -346,3 +346,4 @@ def test_auth_schemas():
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
+

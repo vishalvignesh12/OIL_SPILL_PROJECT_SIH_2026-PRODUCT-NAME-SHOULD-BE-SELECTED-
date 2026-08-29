@@ -10,40 +10,17 @@ from app.models.satellite_scene import SatelliteScene
 from app.schemas.detection import AnalyzeRequest
 
 
-def make_db_result(value):
-    result = Mock()
-    result.scalars.return_value.first.return_value = value
-    return result
-
-
-def detection_result():
-    return {
-        "detection_id": uuid4(),
-        "slick_polygon": {
-            "type": "Polygon",
-            "coordinates": [[
-                [76.10, 9.80],
-                [76.12, 9.81],
-                [76.15, 9.85],
-                [76.13, 9.86],
-                [76.09, 9.82],
-                [76.10, 9.80],
-            ]],
-        },
-        "area_km2": 12.42,
-        "length_km": 8.21,
-        "width_km": 1.42,
-        "orientation_deg": 73.0,
-        "confidence": 0.94,
-        "age_estimate_hours": 18.0,
-        "age_confidence": "HIGH",
-    }
+def _stmt_target_type(stmt):
+    """Return the mapped class that a SQLAlchemy select() targets, or None."""
+    cd = getattr(stmt, "column_descriptions", None)
+    if cd:
+        return cd[0].get("type")
+    return None
 
 
 @pytest.mark.asyncio
 async def test_analyze_slick_creates_incident_and_scene():
     db = AsyncMock()
-
     req = AnalyzeRequest(
         scene_id="test_scene_001",
         image_url="http://example.com/image.jpg",

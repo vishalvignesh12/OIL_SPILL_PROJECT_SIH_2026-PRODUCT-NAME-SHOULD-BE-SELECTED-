@@ -3,7 +3,7 @@ Basic functionality tests to prevent demo breakage.
 Tests authentication, database health, and core API availability.
 """
 import pytest
-from httpx import AsyncClient
+from httpx import AsyncClient, ASGITransport
 from uuid import uuid4
 from datetime import datetime, UTC
 
@@ -14,7 +14,7 @@ from app.core.config import settings
 @pytest.mark.asyncio
 async def test_health_endpoint():
     """Test that the health endpoint is available."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.get("/health")
         assert response.status_code == 200
         data = response.json()
@@ -24,7 +24,7 @@ async def test_health_endpoint():
 @pytest.mark.asyncio
 async def test_ready_endpoint_without_db():
     """Test ready endpoint behavior when database is not available."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.get("/health/ready")
         # Should return 503 when DB is not configured in test
         assert response.status_code == 503
@@ -35,7 +35,7 @@ async def test_ready_endpoint_without_db():
 @pytest.mark.asyncio
 async def test_user_registration():
     """Test user registration endpoint."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         # Use unique email to avoid conflicts
         unique_suffix = str(uuid4())[:8]
         user_data = {
@@ -59,7 +59,7 @@ async def test_user_registration():
 @pytest.mark.asyncio
 async def test_user_login():
     """Test user login endpoint."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         # Use unique email to avoid conflicts
         unique_suffix = str(uuid4())[:8]
         user_data = {
@@ -89,7 +89,7 @@ async def test_user_login():
 @pytest.mark.asyncio
 async def test_protected_endpoint_requires_auth():
     """Test that protected endpoints require authentication."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.get("/api/v1/auth/me")
         # Should require authentication
         assert response.status_code == 401
@@ -101,7 +101,7 @@ async def test_protected_endpoint_requires_auth():
 @pytest.mark.asyncio
 async def test_incidents_endpoint_structure():
     """Test that incidents endpoint has correct structure."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.get("/api/v1/incidents")
         # Should either work or give predictable auth error
         assert response.status_code in [200, 401, 500]
@@ -116,7 +116,7 @@ async def test_incidents_endpoint_structure():
 @pytest.mark.asyncio
 async def test_api_documentation_available():
     """Test that API documentation is available."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.get("/docs")
         assert response.status_code == 200
         assert "text/html" in response.headers.get("content-type", "")
@@ -125,7 +125,7 @@ async def test_api_documentation_available():
 @pytest.mark.asyncio
 async def test_openapi_json_available():
     """Test that OpenAPI JSON schema is available."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.get("/openapi.json")
         assert response.status_code == 200
         data = response.json()
@@ -162,3 +162,4 @@ def test_models_can_be_imported():
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
+

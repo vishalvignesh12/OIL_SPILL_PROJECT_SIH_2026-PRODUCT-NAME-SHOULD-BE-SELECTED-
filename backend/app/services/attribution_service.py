@@ -5,6 +5,8 @@ from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from geoalchemy2.shape import to_shape
+from geoalchemy2.elements import WKBElement, WKTElement
+from shapely.geometry.base import BaseGeometry
 from shapely.geometry import shape, Point, LineString
 import math
 from app.models.vessel import Vessel
@@ -13,11 +15,35 @@ from app.models.drift_result import DriftResult
 from app.schemas.attribution import ScoreRequest, AttributionResponse, VesselCandidateResponse
 from app.services.ais_service import query_ais_tracks, detect_ais_gaps
 
+from sqlalchemy.orm import aliased
+
 async def calculate_attribution_scores(db: AsyncSession, req: ScoreRequest) -> List[AttributionScore]:
     """Calculate ranked vessel attribution scores using PostGIS AIS tracks."""
     # Convert origin point to Shapely object
     origin_shp = shape(req.origin_point.model_dump())
     
+    # Fetch drift result if available to get hindcast path alignment
+    stmt_drift = select(DriftResult).where(DriftResult.incident_id == req.incident_id)
+    res_drift = await db.execute(stmt_drift)
+    drift_result = res_drift.scalars().first()
+    
+    spill_angle = 53.0
+    has_drift_path = False
+    if drift_result and drift_result.hindcast_path:
+        hp = drift_result.hindcast_path
+        if isinstance(hp, BaseGeometry):
+            hp_shp = hp
+        elif isinstance(hp, (WKBElement, WKTElement)):
+            hp_shp = to_shape(hp)
+        else:
+            hp_shp = None
+            
+        if hp_shp and hasattr(hp_shp, "coords") and len(hp_shp.coords) >= 2:
+            dx_spill = hp_shp.coords[-1][0] - hp_shp.coords[0][0]
+            dy_spill = hp_shp.coords[-1][1] - hp_shp.coords[0][1]
+            spill_angle = math.degrees(math.atan2(dy_spill, dx_spill)) % 360
+            has_drift_path = True
+
     # 1. PostGIS spatial+temporal AIS search (via query_ais_tracks)
     # We broaden the temporal search by 12 hours to capture tracks leading up to and after the spill
     buffer_start = req.origin_time_start - timedelta(hours=12)
@@ -50,7 +76,15 @@ async def calculate_attribution_scores(db: AsyncSession, req: ScoreRequest) -> L
         coords = []
         
         for pt in track_pts:
-            pt_shp = to_shape(pt.position)
+            if isinstance(pt.position, BaseGeometry):
+                pt_shp = pt.position
+            elif isinstance(pt.position, (WKBElement, WKTElement)):
+                pt_shp = to_shape(pt.position)
+            elif hasattr(pt.position, "x") and hasattr(pt.position, "y") and isinstance(getattr(pt.position, "x", None), (int, float)):
+                pt_shp = Point(pt.position.x, pt.position.y)
+            else:
+                # Skip track points with invalid/missing position geometry
+                continue
             coords.append((pt_shp.x, pt_shp.y))
             # Rough distance in km (1 degree approx 111 km at equator)
             dist = origin_shp.distance(pt_shp) * 111.0
@@ -73,20 +107,21 @@ async def calculate_attribution_scores(db: AsyncSession, req: ScoreRequest) -> L
             
         # 3. Trajectory Parity / Alignment
         # Calculate heading of vessel path if it has at least 2 points
-        trajectory_alignment = 0.5 # default moderate correlation
         if len(coords) >= 2:
             # Vector of vessel track
             dx = coords[-1][0] - coords[0][0]
             dy = coords[-1][1] - coords[0][1]
             track_angle = math.degrees(math.atan2(dy, dx)) % 360
             
-            # For mock calculations, we assume spill alignment is 53 degrees (northeast)
-            spill_angle = 53.0
             angle_diff = abs(track_angle - spill_angle)
             if angle_diff > 180:
                 angle_diff = 360 - angle_diff
             # Trajectory score: 1.0 aligned, 0.0 perpendicular/opposite
             trajectory_alignment = max(0.0, 1.0 - (angle_diff / 90.0))
+        elif has_drift_path:
+            trajectory_alignment = 0.75
+        else:
+            trajectory_alignment = 0.5
             
         # 4. AIS Anomaly / Gap Score
         # Check if there is an AIS gap during the spill window

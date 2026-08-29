@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, List, Literal, Tuple, Dict, Any
 from uuid import UUID
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 class GeoJSONPolygon(BaseModel):
     type: Literal["Polygon"] = "Polygon"
@@ -26,9 +26,8 @@ class SceneCreate(SceneBase):
     pass
 
 class SceneResponse(SceneBase):
+    model_config = ConfigDict(from_attributes=True)
+
     id: UUID
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True

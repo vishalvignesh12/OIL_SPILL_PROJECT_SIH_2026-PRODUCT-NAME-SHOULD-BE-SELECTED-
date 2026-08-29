@@ -3,11 +3,11 @@ Core API and database health tests to prevent demo breakage tests.
 Tests health endpoints, database connectivity, and basic API availability.
 """
 import pytest
-from unittest.mock import AsyncMock, patch
+from unittest.mock import Mock, AsyncMock, patch
 from uuid import uuid4
 from datetime import datetime, UTC
 
-from httpx import AsyncClient
+from httpx import AsyncClient, ASGITransport
 
 from app.main import app
 from app.core.database import check_db_health
@@ -18,7 +18,7 @@ from app.models.user import User
 @pytest.mark.asyncio
 async def test_health_endpoints():
     """Test health check endpoints are available and return correct format."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         # Test liveness endpoint
         response = await client.get("/health")
         assert response.status_code == 200
@@ -41,7 +41,7 @@ async def test_database_health_check_function():
     mock_db = AsyncMock()
 
     # Test successful case
-    mock_result = AsyncMock()
+    mock_result = Mock()
     mock_result.scalar.return_value = 1
     mock_db.execute.return_value = mock_result
 
@@ -58,7 +58,7 @@ async def test_database_health_check_function():
 @pytest.mark.asyncio
 async def test_core_api_endpoints_exist():
     """Test that core API endpoints exist and are accessible."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         # Test incidents endpoints
         response = await client.get("/api/v1/incidents")
         assert response.status_code != 404  # Endpoint exists
@@ -127,7 +127,7 @@ async def test_core_api_endpoints_exist():
 @pytest.mark.asyncio
 async def test_api_endpoints_return_correct_content_types():
     """Test that API endpoints return JSON content type."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         # Test health endpoint
         response = await client.get("/health")
         assert response.status_code == 200
@@ -147,7 +147,7 @@ async def test_api_endpoints_return_correct_content_types():
 @pytest.mark.asyncio
 async def test_cors_headers_present():
     """Test that CORS headers are present in responses."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         response = await client.options("/api/v1/incidents")
         # Should have CORS headers
         # Note: Exact headers depend on CORS middleware configuration
@@ -216,7 +216,7 @@ async def test_database_connection_configuration():
 @pytest.mark.asyncio
 async def test_error_handling_format():
     """Test that error responses follow the standard format."""
-    async with AsyncClient(app=app, base_url="http://test") as client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         # Test unprotected endpoint that should fail validation
         response = await client.post("/api/v1/auth/register", json={})
         if response.status_code == 422:  # Validation error
@@ -256,3 +256,4 @@ def test_settings_loading():
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
+
