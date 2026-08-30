@@ -1,0 +1,204 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Login - National Marine Oil Spill Monitoring System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e3e2e2",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#096969",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#708ab5",
+                        "secondary-fixed": "#a2f0ef",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#b97958",
+                        "background": "#fbf9f9",
+                        "tertiary-container": "#3d1500",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "surface-container-high": "#e9e8e7",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#465f88",
+                        "primary-fixed-dim": "#aec7f6",
+                        "on-background": "#1b1c1c",
+                        "primary": "#000a1e",
+                        "on-tertiary-fixed-variant": "#6c391d",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#001b3d",
+                        "on-tertiary-fixed": "#341100",
+                        "surface-container-highest": "#e3e2e2",
+                        "tertiary": "#180500",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "primary-container": "#002147",
+                        "outline": "#74777f",
+                        "on-surface-variant": "#44474e",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#303031",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "surface-container-low": "#f5f3f3",
+                        "outline-variant": "#c4c6cf",
+                        "surface": "#fbf9f9",
+                        "inverse-primary": "#aec7f6",
+                        "secondary-fixed-dim": "#86d4d3",
+                        "surface-container": "#efeded",
+                        "secondary-container": "#a2f0ef",
+                        "inverse-on-surface": "#f2f0f0",
+                        "surface-dim": "#dbdad9",
+                        "primary-fixed": "#d6e3ff",
+                        "on-surface": "#1b1c1c",
+                        "on-secondary-fixed": "#002020",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#fbf9f9",
+                        "on-secondary-container": "#166f6f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "margin-desktop": "40px",
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface h-screen flex flex-col antialiased">
+<!-- Top Header -->
+<header class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 bg-surface-container-lowest border-b border-outline-variant shrink-0">
+
+
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex w-full">
+<!-- Left Side: Visual (Hidden on mobile) -->
+<section class="hidden lg:block w-1/2 relative bg-primary">
+<img alt="Maritime surveillance visual" class="absolute inset-0 w-full h-full object-cover opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3kAnOk8US9nuo3dUUNGFPyt4YBtQBdeJNwPh6s063YfoiYBJ_337XckXFuTD2S61GjWveZeITtGDgx_zvmDl8oBHe_8nklmT_kBQaks5HlU1vjYyskw8jZhSYKzGRtcZeQ0YUv537mdWKqruhNXecXcNaX3AzNNBRaIfpk6xS7B3CYCrhsB0EBZ3Wh3mOJC0pIVFV6i8ijg2EsGHb2Ulu9jjh_lYYNV8q8YOdK9RmdI769fthcQvQyw">
+<div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent"></div>
+<div class="absolute bottom-12 left-12 max-w-md text-on-primary">
+<h2 class="font-headline-md text-headline-md mb-2 font-bold">Surveillance Matrix Active</h2>
+<p class="font-body-md text-body-md opacity-90">Real-time geospatial observation network monitoring coastal territories for environmental anomalies and vessel compliance.</p>
+</div>
+</section>
+<!-- Right Side: Login Panel -->
+<section class="w-full lg:w-1/2 flex items-center justify-center bg-surface-container-lowest p-margin-mobile md:p-margin-desktop">
+<div class="w-full max-w-[440px] flex flex-col">
+<div class="mb-8">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary mb-2">National Marine Oil Spill Monitoring</h1>
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded border border-outline-variant mb-4">
+<span class="material-symbols-outlined text-primary text-[16px]">admin_panel_settings</span>
+<span class="font-label-sm text-label-sm uppercase font-bold tracking-wider text-on-surface">Secure Access Portal</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Authorized personnel only. Sign in to access satellite-based oil spill monitoring, vessel attribution and maritime environmental intelligence.</p>
+</div>
+<form class="flex flex-col gap-5">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-bold" for="email">Official Email / User ID</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">person</span>
+</div>
+<input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline rounded text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-colors outline-none" id="email" required="" type="email">
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-label-md text-on-surface font-bold" for="password">Password</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">lock</span>
+</div>
+<input class="w-full pl-10 pr-12 py-3 bg-surface-container-lowest border border-outline rounded text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-colors outline-none" id="password" required="" type="password">
+<button aria-label="Toggle password visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline text-primary focus:ring-primary bg-surface-container-lowest cursor-pointer" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Remember this device</span>
+</label>
+<a class="font-label-md text-label-md text-primary hover:underline font-semibold" href="#">Forgot password?</a>
+</div>
+<button class="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary py-3 px-4 rounded font-label-md text-label-md font-bold mt-4 hover:bg-primary transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-primary" type="submit">
+<span class="material-symbols-outlined text-[20px]">lock_person</span>
+                        Sign In Securely
+                    </button>
+</form>
+<div class="mt-8 p-4 bg-error-container/30 border border-error-container rounded flex items-start gap-3">
+<span class="material-symbols-outlined text-error shrink-0">gavel</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+<strong class="text-on-surface block mb-1">Authorized Access Only.</strong>
+                        All activities on this system may be monitored, recorded, and audited for security purposes. Unauthorized access is prohibited.
+                    </p>
+</div>
+<div class="mt-8 flex flex-wrap justify-center gap-x-4 gap-y-2 text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">shield</span> Protected access</span>
+<span class="font-label-sm text-label-sm text-outline hidden sm:inline">•</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">lock</span> Encrypted communication</span>
+<span class="font-label-sm text-label-sm text-outline hidden sm:inline">•</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">receipt_long</span> Audit logging</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant w-full shrink-0">
+<div class="flex flex-col md:flex-row justify-between items-center w-full py-6 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto gap-4">
+
+<nav class="flex flex-wrap justify-center gap-4 md:gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Use</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Accessibility Statement</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Statutory Disclosures</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Help &amp; Support</a>
+</nav>
+<div class="font-label-sm text-label-sm text-on-surface-variant">
+                Last Updated: <span id="current-date" class="">August 27, 2026</span>
+</div>
+</div>
+</footer>
+<script>
+        // Set current date placeholder
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    </script>
+
+
+</body></html>

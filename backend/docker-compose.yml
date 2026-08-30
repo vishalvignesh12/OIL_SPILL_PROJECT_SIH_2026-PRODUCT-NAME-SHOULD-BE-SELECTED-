@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: oil-spill-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app
+      - ./scripts:/app/scripts
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/oil_spill
+      - JWT_SECRET=supersecretjwtkeyforoilspilldetectionplatform2026sih
+      - JWT_ALGORITHM=HS256
+      - JWT_EXPIRATION_MINUTES=1440
+      - GFW_API_KEY=mock_gfw_api_key
+      - CMEMS_USERNAME=mock_cmems_user
+      - CMEMS_PASSWORD=mock_cmems_pass
+      - ERA5_API_KEY=mock_era5_key
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: oil-spill-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=oil_spill
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d oil_spill"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
