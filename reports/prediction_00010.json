@@ -1,8 +1,0 @@
-{
-  "scene_id": "00010.tif",
-  "model_version": "oilspill-unet-v1",
-  "presence": false,
-  "max_confidence": 0.39664968848228455,
-  "regions": [],
-  "acquisition_time": null
-}
