@@ -10,7 +10,7 @@ from app.core.database import get_db
 from app.core.security import require_analyst
 from app.models.incident import Incident
 from app.schemas.incident import IncidentCreate, IncidentResponse, GeoJSONPoint
-from app.services.investigation_service import to_geojson_point
+from app.services.dashboard_service import to_geojson_point
 
 router = APIRouter(prefix="/incidents", tags=["Incidents"], dependencies=[Depends(require_analyst)])
 

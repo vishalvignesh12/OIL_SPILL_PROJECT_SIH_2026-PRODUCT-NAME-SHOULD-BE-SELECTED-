@@ -9,7 +9,7 @@ from app.core.security import require_analyst
 from app.models.vessel import Vessel
 from app.models.ais_track import AISTrack
 from app.schemas.vessel import VesselResponse, VesselTrackResponse
-from app.services.investigation_service import to_geojson_point
+from app.services.dashboard_service import to_geojson_point
 
 router = APIRouter(prefix="/vessels", tags=["Vessels Explorer"], dependencies=[Depends(require_analyst)])
 

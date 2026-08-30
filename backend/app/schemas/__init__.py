@@ -6,7 +6,14 @@ from app.schemas.drift import HindcastRequest, ForecastRequest, DriftResponse, G
 from app.schemas.ais import AISQuery, AISGapAlert
 from app.schemas.vessel import VesselResponse, VesselTrackResponse
 from app.schemas.attribution import ScoreRequest, AttributionResponse, VesselCandidateResponse
-from app.schemas.investigation import InvestigationResponse
+from app.schemas.investigation import (
+    InvestigationEntityCreate,
+    InvestigationEntityUpdate,
+    InvestigationEntityResponse,
+    InvestigationAggregatedResponse,
+    InvestigationEventCreate,
+    InvestigationEventResponse
+)
 from app.schemas.evidence import EvidenceResponse, EvidenceItem
 from app.schemas.common import ErrorEnvelope, PaginatedResponse
 
@@ -19,7 +26,12 @@ __all__ = [
     "AISQuery", "AISGapAlert",
     "VesselResponse", "VesselTrackResponse",
     "ScoreRequest", "AttributionResponse", "VesselCandidateResponse",
-    "InvestigationResponse",
+    "InvestigationEntityCreate",
+    "InvestigationEntityUpdate",
+    "InvestigationEntityResponse",
+    "InvestigationAggregatedResponse",
+    "InvestigationEventCreate",
+    "InvestigationEventResponse",
     "EvidenceResponse", "EvidenceItem",
     "ErrorEnvelope", "PaginatedResponse"
 ]

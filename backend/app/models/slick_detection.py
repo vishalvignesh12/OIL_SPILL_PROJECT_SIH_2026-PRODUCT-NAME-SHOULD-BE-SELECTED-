@@ -29,3 +29,5 @@ class SlickDetection(Base):
 
     # Relationship to SpillRegion
     regions = relationship("SpillRegion", back_populates="detection", cascade="all, delete-orphan")
+    # Relationship to Investigation
+    investigation = relationship("Investigation", back_populates="detection")
