@@ -94,6 +94,7 @@ async def test_analyze_slick_creates_incident_and_scene():
     async def mock_execute(stmt):
         mock_result = Mock()
         mock_result.scalars.return_value.first.return_value = None
+        mock_result.scalar_one_or_none.return_value = None
         return mock_result
 
     db.execute.side_effect = mock_execute
@@ -101,12 +102,14 @@ async def test_analyze_slick_creates_incident_and_scene():
     db.commit = AsyncMock()
     db.refresh = AsyncMock()
 
-    # Mock satellite adapter
-    with patch('app.services.detection_service.FixtureSatelliteAdapter') as mock_adapter_class:
-        mock_adapter = AsyncMock()
-        mock_adapter.analyze_scene.return_value = {
-            "detection_id": uuid4(),
-            "slick_polygon": {
+    # Mock ML provider
+    with patch('app.services.detection_service.get_ml_provider') as mock_provider_factory:
+        mock_provider = AsyncMock()
+        mock_provider.predict.return_value = {
+            "detected": True,
+            "confidence": 0.94,
+            "area_km2": 12.42,
+            "geometry": {
                 "type": "Polygon",
                 "coordinates": [[
                     [76.10, 9.80],
@@ -117,15 +120,15 @@ async def test_analyze_slick_creates_incident_and_scene():
                     [76.10, 9.80]
                 ]]
             },
-            "area_km2": 12.42,
+            "model_name": "oilspill-detector",
+            "model_version": "fixture-v1",
             "length_km": 8.21,
             "width_km": 1.42,
             "orientation_deg": 73.0,
-            "confidence": 0.94,
             "age_estimate_hours": 18.0,
             "age_confidence": "HIGH"
         }
-        mock_adapter_class.return_value = mock_adapter
+        mock_provider_factory.return_value = mock_provider
 
         # Execute
         result = await analyze_slick(db, req)
@@ -167,6 +170,7 @@ async def test_analyze_slick_uses_existing_incident_and_scene():
 
     existing_scene = Mock(spec=SatelliteScene)
     existing_scene.id = existing_scene_id
+    existing_scene.scene_id = str(existing_scene_id)
 
     # Structural database query dispatch using SQLAlchemy Select AST inspection
     async def mock_execute(stmt):
@@ -175,10 +179,13 @@ async def test_analyze_slick_uses_existing_incident_and_scene():
 
         if target is Incident:
             mock_result.scalars.return_value.first.return_value = existing_incident
+            mock_result.scalar_one_or_none.return_value = existing_incident
         elif target is SatelliteScene:
             mock_result.scalars.return_value.first.return_value = existing_scene
+            mock_result.scalar_one_or_none.return_value = existing_scene
         else:
             mock_result.scalars.return_value.first.return_value = None
+            mock_result.scalar_one_or_none.return_value = None
         return mock_result
 
     db.execute.side_effect = mock_execute
@@ -186,12 +193,14 @@ async def test_analyze_slick_uses_existing_incident_and_scene():
     db.commit = AsyncMock()
     db.refresh = AsyncMock()
 
-    # Mock satellite adapter
-    with patch('app.services.detection_service.FixtureSatelliteAdapter') as mock_adapter_class:
-        mock_adapter = AsyncMock()
-        mock_adapter.analyze_scene.return_value = {
-            "detection_id": uuid4(),
-            "slick_polygon": {
+    # Mock ML provider
+    with patch('app.services.detection_service.get_ml_provider') as mock_provider_factory:
+        mock_provider = AsyncMock()
+        mock_provider.predict.return_value = {
+            "detected": True,
+            "confidence": 0.94,
+            "area_km2": 12.42,
+            "geometry": {
                 "type": "Polygon",
                 "coordinates": [[
                     [76.10, 9.80],
@@ -202,15 +211,10 @@ async def test_analyze_slick_uses_existing_incident_and_scene():
                     [76.10, 9.80]
                 ]]
             },
-            "area_km2": 12.42,
-            "length_km": 8.21,
-            "width_km": 1.42,
-            "orientation_deg": 73.0,
-            "confidence": 0.94,
-            "age_estimate_hours": 18.0,
-            "age_confidence": "HIGH"
+            "model_name": "oilspill-detector",
+            "model_version": "fixture-v1"
         }
-        mock_adapter_class.return_value = mock_adapter
+        mock_provider_factory.return_value = mock_provider
 
         # Execute
         result = await analyze_slick(db, req)

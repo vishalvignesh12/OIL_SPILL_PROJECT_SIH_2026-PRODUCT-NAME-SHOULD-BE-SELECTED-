@@ -1,4 +1,5 @@
 import time
+import asyncio
 from datetime import datetime, UTC, timezone
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,6 +10,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from typing import List, Optional
 
 from app.integrations.satellite import FixtureSatelliteAdapter
+from app.integrations.ml import MLInferenceProvider, FixtureMLProvider, get_ml_provider
 from app.models.slick_detection import SlickDetection
 from app.models.incident import Incident
 from app.models.satellite_scene import SatelliteScene
@@ -16,6 +18,7 @@ from app.models.spill_region import SpillRegion
 from app.models.inference_log import MLInferenceLog
 from app.schemas.detection import AnalyzeRequest, DetectionResponse
 from app.services.geospatial_service import GeospatialService
+from app.core.config import settings
 from app.core.logging import log_inference
 
 
@@ -240,9 +243,10 @@ async def _get_or_create_scene(db: AsyncSession, scene_id: str, ml_result: dict)
             scene_id=scene_id,
             satellite="Sentinel-1",
             sensor="SAR",
+            
             product_type="GRD",
             polarization="VV",
-            acquisition_time=ml_result.get("acquisition_time", datetime.now(UTC)),
+            acquisition_time=acquisition_time,
             processing_time=datetime.now(timezone.utc),
             bbox=from_shape(shape({
                 "type": "Polygon",
@@ -367,9 +371,7 @@ async def _create_detection_record(
         width_km=ml_result.get("width_km"),
         orientation_deg=ml_result.get("orientation_deg"),
         age_estimate_hours=ml_result.get("age_estimate_hours"),
-        age_confidence=ml_result.get("age_confidence"),
-        mask_uri=ml_result.get("mask_uri"),
-        prediction_uri=ml_result.get("prediction_uri")
+        age_confidence=ml_result.get("age_confidence")
     )
     db.add(slick)
     await db.flush()
@@ -450,13 +452,30 @@ async def _process_spill_region(db: AsyncSession, region_data: dict, geo_service
 
 async def analyze_slick(db: AsyncSession, req: AnalyzeRequest) -> SlickDetection:
     """Orchestrate satellite scene analysis, log inference, and save results."""
-    # Instantiate satellite adapter (fixture version for MVP)
-    adapter = FixtureSatelliteAdapter()
+    start_time = time.time()
+
+    # Get or create scene record (minimal metadata for scene creation)
+    scene = await _get_or_create_scene(db, req.scene_id, {
+        "scene_id": req.scene_id,
+        "acquisition_time": req.timestamp
+    })
+
+    # Get ML provider
+    provider = get_ml_provider()
 
     # Run analysis to get ML prediction
-    ml_result = await adapter.analyze_scene(req.scene_id, req.image_url or "", req.timestamp)
+    ml_prediction = await provider.predict(scene)
 
-    # Process the ML prediction using the new pipeline
-    slick = await process_ml_prediction(db, ml_result)
+    # Calculate processing time
+    processing_time_ms = int((time.time() - start_time) * 1000)
+
+    # Convert ML prediction to format expected by existing pipeline
+    from app.services.ml_inference_service import convert_ml_to_detection_format
+    ml_result_for_detection = convert_ml_to_detection_format(
+        ml_prediction, scene, processing_time_ms
+    )
+
+    # Process the ML prediction using the existing pipeline
+    slick = await process_ml_prediction(db, ml_result_for_detection)
 
     return slick

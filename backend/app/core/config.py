@@ -45,6 +45,23 @@ class Settings(BaseModel):
     ERA5_API_KEY: str = Field(default_factory=lambda: os.getenv(
         "ERA5_API_KEY", "mock_era5_key"
     ))
+
+    # ML Inference configuration
+    ML_PROVIDER: str = Field(default_factory=lambda: os.getenv(
+        "ML_PROVIDER", "fixture"
+    ))
+    ML_SERVICE_URL: str = Field(default_factory=lambda: os.getenv(
+        "ML_SERVICE_URL", "http://localhost:8001/predict"
+    ))
+    ML_INFERENCE_TIMEOUT_SECONDS: int = Field(default_factory=lambda: int(os.getenv(
+        "ML_INFERENCE_TIMEOUT_SECONDS", "30"
+    )))
+    ML_MODEL_NAME: str = Field(default_factory=lambda: os.getenv(
+        "ML_MODEL_NAME", "oilspill-detector"
+    ))
+    ML_MODEL_VERSION: str = Field(default_factory=lambda: os.getenv(
+        "ML_MODEL_VERSION", "v1"
+    ))
     
     # CORS (PRD §34.6: explicit allowed origins, never "*" in production)
     CORS_ORIGINS: List[str] = Field(default_factory=lambda: [
