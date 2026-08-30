@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Dataset archives and raw data
+data/raw/*.7z
+data/raw/*.zip
+data/raw/*.tar
+data/raw/*.tar.gz
+
+# Trained model checkpoints
+*.pt
+*.pth
+*.ckpt
+
+# Experiment outputs
+runs/
+outputs/
+checkpoints/
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backend test backup outside AI folder
+../backend_tests_backup_20260829/
