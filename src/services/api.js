@@ -152,8 +152,12 @@ export const api = {
    * Falls back to mock data until a /metrics endpoint is added to the backend.
    */
   async getSystemMetrics() {
-    await delay();
-    return { ...systemMetrics };
+    try {
+      return await apiFetch('/metrics');
+    } catch {
+      await delay();
+      return { ...systemMetrics };
+    }
   },
 
   // ── Vessels ──────────────────────────────────────────────────────────────
@@ -302,23 +306,31 @@ export const api = {
    * No dedicated GET /detections list endpoint exists yet — using mock.
    */
   async getDetections(filters = {}) {
-    await delay();
-    let list = [...detectionsRegistry];
-    if (filters.severity) {
-      list = list.filter(d => d.severity.toLowerCase() === filters.severity.toLowerCase());
+    try {
+      const params = new URLSearchParams();
+      if (filters.severity) params.set('severity', filters.severity);
+      if (filters.status) params.set('status', filters.status);
+      const qs = params.toString() ? `?${params}` : '';
+      return await apiFetch(`/detections${qs}`);
+    } catch {
+      await delay();
+      let list = [...detectionsRegistry];
+      if (filters.severity) {
+        list = list.filter(d => d.severity.toLowerCase() === filters.severity.toLowerCase());
+      }
+      if (filters.status) {
+        list = list.filter(d => d.status.toLowerCase().includes(filters.status.toLowerCase()));
+      }
+      if (filters.search) {
+        const q = filters.search.toLowerCase();
+        list = list.filter(d =>
+          d.id.toLowerCase().includes(q) ||
+          d.region.toLowerCase().includes(q) ||
+          (d.suspectVessel && d.suspectVessel.toLowerCase().includes(q))
+        );
+      }
+      return list;
     }
-    if (filters.status) {
-      list = list.filter(d => d.status.toLowerCase().includes(filters.status.toLowerCase()));
-    }
-    if (filters.search) {
-      const q = filters.search.toLowerCase();
-      list = list.filter(d =>
-        d.id.toLowerCase().includes(q) ||
-        d.region.toLowerCase().includes(q) ||
-        (d.suspectVessel && d.suspectVessel.toLowerCase().includes(q))
-      );
-    }
-    return list;
   },
 
   /**
@@ -347,8 +359,12 @@ export const api = {
    * Get security alerts list (mock only — no backend alerts endpoint yet).
    */
   async getAlerts() {
-    await delay();
-    return [...securityAlerts];
+    try {
+      return await apiFetch('/alerts');
+    } catch {
+      await delay();
+      return [...securityAlerts];
+    }
   },
 
   /**
