@@ -177,6 +177,7 @@ async def create_analysis_job(scene: SatelliteScene) -> str:
         service_name="satellite_ingestion_service",
         model_name="FixtureSceneIngestion",
         model_version="v1.0.0",
+        analysis_id=analysis_id,
         incident_id="",  # Not available at ingestion time
         latency_ms=0,
         status_code=202  # Accepted for processing
