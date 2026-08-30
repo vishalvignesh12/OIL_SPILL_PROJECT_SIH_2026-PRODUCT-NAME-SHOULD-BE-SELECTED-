@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Alerts &amp; Notifications - Maritime Intel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#44474e",
+                        "on-tertiary-container": "#b97958",
+                        "tertiary-container": "#3d1500",
+                        "surface-tint": "#465f88",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#180500",
+                        "background": "#fbf9f9",
+                        "on-secondary-fixed": "#002020",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#708ab5",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "primary": "#000a1e",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f5f3f3",
+                        "surface-dim": "#dbdad9",
+                        "outline-variant": "#c4c6cf",
+                        "on-secondary-container": "#166f6f",
+                        "inverse-surface": "#303031",
+                        "secondary-fixed-dim": "#86d4d3",
+                        "surface": "#fbf9f9",
+                        "inverse-primary": "#aec7f6",
+                        "secondary": "#096969",
+                        "outline": "#74777f",
+                        "surface-variant": "#e3e2e2",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#002147",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "on-primary-fixed": "#001b3d",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#a2f0ef",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#1b1c1c",
+                        "surface-container-high": "#e9e8e7",
+                        "inverse-on-surface": "#f2f0f0",
+                        "primary-fixed-dim": "#aec7f6",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-background": "#1b1c1c",
+                        "surface-bright": "#fbf9f9",
+                        "surface-container": "#efeded",
+                        "secondary-fixed": "#a2f0ef",
+                        "on-tertiary-fixed": "#341100",
+                        "on-tertiary-fixed-variant": "#6c391d",
+                        "surface-container-highest": "#e3e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex antialiased">
+<!-- SideNavBar -->
+<aside class="w-[260px] h-screen fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant flex flex-col py-gutter px-4 z-40">
+<div class="flex items-center gap-3 mb-8 px-2">
+<span class="material-symbols-outlined font-headline-md text-headline-md text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">security</span>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">Maritime Intel</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">National Security</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<!-- Dashboard -->
+<a class="flex items-center gap-3 px-3 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Detection -->
+<a class="flex items-center gap-3 px-3 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined" data-icon="radar">radar</span>
+<span>Detection</span>
+</a>
+<!-- Investigation Map -->
+<a class="flex items-center gap-3 px-3 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span>Investigation Map</span>
+</a>
+<!-- Vessel Attribution -->
+<a class="flex items-center gap-3 px-3 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined" data-icon="fingerprint">fingerprint</span>
+<span>Vessel Attribution</span>
+</a>
+<!-- Vessel Details -->
+<a class="flex items-center gap-3 px-3 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined" data-icon="directions_boat">directions_boat</span>
+<span>Vessel Details</span>
+</a>
+<!-- Evidence Dossier -->
+<a class="flex items-center gap-3 px-3 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined" data-icon="folder_shared">folder_shared</span>
+<span>Evidence Dossier</span>
+</a>
+<!-- Alerts (ACTIVE) -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-l border-r-4 border-primary bg-surface-container-high text-primary font-bold font-label-md text-label-md transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="notifications_active" data-weight="fill" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+<span>Alerts</span>
+<span class="ml-auto bg-error text-on-error font-label-sm text-label-sm px-2 py-0.5 rounded-full">3</span>
+</a>
+<!-- Reports -->
+<a class="flex items-center gap-3 px-3 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span>Reports</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 px-3 py-2 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 px-3 py-2 rounded font-label-md text-label-md text-secondary hover:bg-surface-container-highest transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="lock_person">lock_person</span>
+<span>Secure Session</span>
+</a>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-margin-desktop z-30">
+<div class="font-headline-md text-headline-md text-primary font-bold">
+            Geospatial Investigation Platform
+        </div>
+<div class="flex items-center gap-4">
+<!-- Search positioned on right as per JSON -->
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-lowest border border-outline-variant rounded font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-64 transition-all" placeholder="Global search..." type="text"/>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high transition-all active:opacity-80 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high transition-all active:opacity-80 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high transition-all active:opacity-80 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 ml-[260px] pt-16 pb-8 min-h-screen bg-background">
+<div class="p-margin-desktop max-w-[1200px] mx-auto">
+<!-- Page Header & Filters -->
+<div class="flex flex-col gap-6 mb-8">
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-display-lg text-display-lg text-primary mb-2">Active Alerts</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Monitoring 3 high-priority security events across all sectors.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-outline font-label-md text-label-md text-on-surface rounded hover:bg-surface-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Export Log
+                        </button>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="bg-surface border border-outline-variant rounded p-4 flex flex-wrap gap-4 items-end">
+<div class="flex flex-col gap-1.5 flex-1 min-w-[200px]">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase">Alert Type</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded px-3 py-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+<option>All Types</option>
+<option>Oil Spill</option>
+<option>AIS Gap</option>
+<option>High Risk Vessel</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5 flex-1 min-w-[150px]">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase">Severity</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded px-3 py-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+<option>All Levels</option>
+<option>Critical</option>
+<option>High</option>
+<option>Medium</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5 flex-1 min-w-[150px]">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase">Region</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded px-3 py-2 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+<option>Global</option>
+<option>Pacific Sector</option>
+<option>Atlantic Sector</option>
+<option>Mediterranean</option>
+</select>
+</div>
+<button class="px-4 py-2 bg-surface-container-high hover:bg-surface-variant border border-outline-variant rounded font-label-md text-label-md text-on-surface transition-colors flex items-center gap-2 h-[42px]">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        More Filters
+                    </button>
+</div>
+</div>
+<!-- Alerts List (High Density) -->
+<div class="flex flex-col gap-3">
+<!-- Alert Card: CRITICAL -->
+<div class="bg-surface border border-outline-variant rounded relative overflow-hidden group hover:border-error transition-colors flex flex-col md:flex-row items-stretch">
+<!-- Status Indicator Line -->
+<div class="w-1.5 bg-error shrink-0"></div>
+<div class="p-4 md:p-6 flex-1 flex flex-col md:flex-row gap-6 items-start md:items-center">
+<!-- Icon & Meta -->
+<div class="flex items-center gap-4 min-w-[280px]">
+<div class="w-12 h-12 rounded-full bg-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error text-[28px]" data-icon="water_drop" data-weight="fill" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-error text-on-error font-label-sm text-label-sm px-1.5 py-0.5 rounded uppercase">Critical</span>
+<span class="font-label-md text-label-md text-on-surface-variant">14:22:05 UTC (2m ago)</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface font-bold">NEW OIL SPILL DETECTED</h3>
+</div>
+</div>
+<!-- Details Grid -->
+<div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 border-t md:border-t-0 md:border-l border-outline-variant pt-4 md:pt-0 md:pl-6 w-full">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Region / Coordinates</span>
+<span class="font-body-md text-body-md text-on-surface font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">location_on</span>
+                                    Sector 7G (45.9°N, 12.4°W)
+                                </span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Confidence Level</span>
+<span class="font-body-md text-body-md text-on-surface font-medium text-error">98.4% (SAR Sat + Optical)</span>
+</div>
+<div class="flex flex-col sm:col-span-2 mt-2">
+<div class="flex items-center gap-3 p-2 bg-surface-container-lowest border border-outline-variant rounded">
+<img class="w-12 h-12 object-cover rounded bg-surface-container-high border border-outline-variant" data-alt="A highly detailed, top-down satellite image showing a dark, spreading oil slick on deep blue ocean water. The lighting is harsh midday sunlight, highlighting the contrast between the iridescent sheen of the spill and the surrounding water. The aesthetic is realistic, high-resolution government intelligence imagery used for environmental monitoring. The mood is serious and analytical." data-location="Sector 7G" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbdZpPjKuyhlurHhhMFeXoIVDQ2QJMzbNuc1iIXENiVOKKFvaY2SHv_xZ-PksXFlJ2UONTtjymQ0FtCIjBsGvvy-kMSURVrtlIVpVNM1Om6e--xb-_O4hkVfg2MXKcaOZAHVyzPn58UM2fNQe-BpICB1hX-gVtHGGK3Kud0ABAFaG594qSvRRz2UQvcWJzH2FXtI2ONCj3i3CpKm7ItZFdV3c0K6Csv12DXnFD9cn-lr7Pm96tf_5aDg"/>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase block">Reference Imagery Generated</span>
+<span class="font-body-md text-body-md text-on-surface text-sm">SAR_Scan_7G_20231024_1420Z.tif</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex md:flex-col gap-2 w-full md:w-auto shrink-0 border-t md:border-t-0 border-outline-variant pt-4 md:pt-0">
+<button class="flex-1 md:flex-none px-6 py-2.5 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary font-label-md text-label-md rounded transition-colors text-center font-semibold">
+                                Investigate
+                            </button>
+<button class="flex-1 md:flex-none px-6 py-2.5 border border-outline text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md rounded transition-colors text-center">
+                                Dismiss
+                            </button>
+</div>
+</div>
+</div>
+<!-- Alert Card: HIGH -->
+<div class="bg-surface border border-outline-variant rounded relative overflow-hidden group hover:border-tertiary-container transition-colors flex flex-col md:flex-row items-stretch">
+<!-- Status Indicator Line -->
+<div class="w-1.5 bg-tertiary-container shrink-0"></div>
+<div class="p-4 md:p-6 flex-1 flex flex-col md:flex-row gap-6 items-start md:items-center">
+<!-- Icon & Meta -->
+<div class="flex items-center gap-4 min-w-[280px]">
+<div class="w-12 h-12 rounded-full bg-surface-variant flex items-center justify-center shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-tertiary-container text-[28px]" data-icon="satellite_alt">satellite_alt</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-tertiary-container text-on-tertiary font-label-sm text-label-sm px-1.5 py-0.5 rounded uppercase">High</span>
+<span class="font-label-md text-label-md text-on-surface-variant">13:45:12 UTC (37m ago)</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface font-bold">AIS GAP DETECTED</h3>
+</div>
+</div>
+<!-- Details Grid -->
+<div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 border-t md:border-t-0 md:border-l border-outline-variant pt-4 md:pt-0 md:pl-6 w-full">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Related Vessel</span>
+<span class="font-body-md text-body-md text-on-surface font-medium font-mono">M/V POLARIS (IMO: 8912345)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Last Known Region</span>
+<span class="font-body-md text-body-md text-on-surface font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-outline">explore</span>
+                                    North Sea EEZ Boundary
+                                </span>
+</div>
+<div class="flex flex-col sm:col-span-2 mt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Duration</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Signal lost for 2+ hours in restricted fishing zone.</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex md:flex-col gap-2 w-full md:w-auto shrink-0 border-t md:border-t-0 border-outline-variant pt-4 md:pt-0">
+<button class="flex-1 md:flex-none px-6 py-2.5 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary font-label-md text-label-md rounded transition-colors text-center font-semibold">
+                                Investigate
+                            </button>
+<button class="flex-1 md:flex-none px-6 py-2.5 border border-outline text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md rounded transition-colors text-center">
+                                Dismiss
+                            </button>
+</div>
+</div>
+</div>
+<!-- Alert Card: MEDIUM -->
+<div class="bg-surface border border-outline-variant rounded relative overflow-hidden group hover:border-primary transition-colors flex flex-col md:flex-row items-stretch opacity-90">
+<!-- Status Indicator Line -->
+<div class="w-1.5 bg-primary shrink-0"></div>
+<div class="p-4 md:p-6 flex-1 flex flex-col md:flex-row gap-6 items-start md:items-center">
+<!-- Icon & Meta -->
+<div class="flex items-center gap-4 min-w-[280px]">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[28px]" data-icon="warning">warning</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-surface-variant text-on-surface font-label-sm text-label-sm px-1.5 py-0.5 rounded uppercase border border-outline-variant">Medium</span>
+<span class="font-label-md text-label-md text-on-surface-variant">10:15:00 UTC (4h ago)</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface font-bold">HIGH RISK VESSEL ENTRY</h3>
+</div>
+</div>
+<!-- Details Grid -->
+<div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 border-t md:border-t-0 md:border-l border-outline-variant pt-4 md:pt-0 md:pl-6 w-full">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Related Vessel</span>
+<span class="font-body-md text-body-md text-on-surface font-medium font-mono">T/T OCEANIC (IMO: 7788990)</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Watchlist Flag</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">IUU Fishing Suspect (List B)</span>
+</div>
+<div class="flex flex-col sm:col-span-2 mt-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Action Taken</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Automated tracking priority elevated. Drone dispatch standing by.</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex md:flex-col gap-2 w-full md:w-auto shrink-0 border-t md:border-t-0 border-outline-variant pt-4 md:pt-0">
+<button class="flex-1 md:flex-none px-6 py-2.5 bg-primary-container text-on-primary-container hover:bg-primary hover:text-on-primary font-label-md text-label-md rounded transition-colors text-center font-semibold">
+                                View File
+                            </button>
+<button class="flex-1 md:flex-none px-6 py-2.5 border border-outline text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md rounded transition-colors text-center">
+                                Acknowledge
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 right-0 w-[calc(100%-260px)] h-8 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between px-margin-desktop z-50">
+<div class="font-label-sm text-label-sm text-on-surface-variant">
+            System Health: Operational | UTC: 14:22:05 | Secure Session: Active
+        </div>
+<div class="flex gap-4">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+</div>
+</footer>
+</body></html>

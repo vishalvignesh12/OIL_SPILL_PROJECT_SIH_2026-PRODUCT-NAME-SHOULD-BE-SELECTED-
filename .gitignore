@@ -81,7 +81,6 @@ Thumbs.db
 *.jp2
 *.nc
 *.hdf
-*.h5
 
 # Large archives
 *.zip
@@ -94,3 +93,4 @@ Thumbs.db
 
 tmp/
 temp/
+
