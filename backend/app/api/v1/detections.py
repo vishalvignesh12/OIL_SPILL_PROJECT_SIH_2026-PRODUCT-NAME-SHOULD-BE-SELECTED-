@@ -10,7 +10,7 @@ from app.models.spill_region import SpillRegion
 from app.schemas.detection import AnalyzeRequest, DetectionResponse
 from app.schemas.region import SpillRegionResponse
 from app.services.detection_service import analyze_slick
-from app.services.investigation_service import to_geojson_polygon
+from app.services.dashboard_service import to_geojson_polygon
 from app.services.geospatial_service import GeospatialService
 
 router = APIRouter(prefix="/detections", tags=["Slick Detection"], dependencies=[Depends(require_analyst)])

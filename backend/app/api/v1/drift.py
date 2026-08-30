@@ -7,7 +7,7 @@ from app.core.security import require_analyst
 from app.models.drift_result import DriftResult
 from app.schemas.drift import HindcastRequest, ForecastRequest, DriftResponse
 from app.services.drift_service import calculate_hindcast, calculate_forecast
-from app.services.investigation_service import to_geojson_point, to_geojson_polygon, to_geojson_linestring
+from app.services.dashboard_service import to_geojson_point, to_geojson_polygon, to_geojson_linestring
 
 router = APIRouter(prefix="/drift", tags=["Drift Analysis"], dependencies=[Depends(require_analyst)])
 

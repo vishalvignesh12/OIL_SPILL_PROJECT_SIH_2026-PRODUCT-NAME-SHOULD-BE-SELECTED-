@@ -10,7 +10,7 @@ from app.models.incident import Incident
 from app.schemas.auth import UserResponse
 from app.schemas.vessel import VesselResponse
 from app.schemas.incident import IncidentResponse
-from app.services.investigation_service import to_geojson_point
+from app.services.dashboard_service import to_geojson_point
 
 router = APIRouter(prefix="/admin", tags=["Admin Portal"], dependencies=[Depends(require_admin)])
 

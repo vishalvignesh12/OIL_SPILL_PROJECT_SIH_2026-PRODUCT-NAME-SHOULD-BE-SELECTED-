@@ -10,7 +10,7 @@ from app.core.database import get_db
 from app.core.security import require_analyst
 from app.models.satellite_scene import SatelliteScene
 from app.schemas.scene import SceneCreate, SceneResponse
-from app.services.investigation_service import to_geojson_polygon
+from app.services.dashboard_service import to_geojson_polygon
 from app.services.satellite_ingestion_service import ingest_satellite_scene
 
 router = APIRouter(prefix="/scenes", tags=["Satellite Scenes"], dependencies=[Depends(require_analyst)])

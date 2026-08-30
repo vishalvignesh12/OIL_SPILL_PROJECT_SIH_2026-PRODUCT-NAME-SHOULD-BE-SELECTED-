@@ -8,6 +8,8 @@ from app.models.vessel import Vessel
 from app.models.ais_track import AISTrack
 from app.models.attribution import AttributionScore
 from app.models.inference_log import MLInferenceLog
+from app.models.investigation import Investigation
+from app.models.investigation_event import InvestigationEvent
 
 __all__ = [
     "Base",
@@ -19,5 +21,7 @@ __all__ = [
     "Vessel",
     "AISTrack",
     "AttributionScore",
-    "MLInferenceLog"
+    "MLInferenceLog",
+    "Investigation",
+    "InvestigationEvent"
 ]

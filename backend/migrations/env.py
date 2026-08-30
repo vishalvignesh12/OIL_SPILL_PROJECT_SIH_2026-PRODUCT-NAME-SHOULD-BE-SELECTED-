@@ -11,6 +11,9 @@ from app.models import Base
 # Alembic Config object
 config = context.config
 
+# Debug: print tables in metadata
+print("Tables in metadata:", list(Base.metadata.tables.keys()))
+
 # Interpret the config file for Python logging.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -26,6 +29,7 @@ def include_object(object, name, type_, reflected, compare_to):
         app_tables = {
             "incidents", "users", "vessels", "ais_tracks", "satellite_scenes",
             "slick_detections", "drift_results", "attribution_scores", "ml_inference_log",
+            "investigations", "investigation_events",
             "alembic_version"
         }
         if name not in app_tables:

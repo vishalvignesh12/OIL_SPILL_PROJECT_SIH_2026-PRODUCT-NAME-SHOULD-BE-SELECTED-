@@ -50,6 +50,16 @@ def to_geojson_polygon(geom) -> Optional[dict]:
     }
 
 
+def to_geojson_linestring(geom) -> Optional[dict]:
+    """Convert SQLAlchemy geometry to GeoJSON linestring."""
+    if geom is None:
+        return None
+    shape_obj = to_shape(geom)
+    return {
+        "type": "LineString",
+        "coordinates": list(mapping(shape_obj)["coordinates"])
+    }
+
 class DashboardService:
     def __init__(self, db: AsyncSession):
         self.db = db
