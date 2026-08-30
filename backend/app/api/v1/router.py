@@ -9,6 +9,7 @@ from app.api.v1.vessels import router as vessels_router
 from app.api.v1.attribution import router as attribution_router
 from app.api.v1.investigations import router as investigations_router
 from app.api.v1.admin import router as admin_router
+from app.api.v1.dashboard import router as dashboard_router
 
 api_router = APIRouter()
 
@@ -22,3 +23,4 @@ api_router.include_router(vessels_router)
 api_router.include_router(attribution_router)
 api_router.include_router(investigations_router)
 api_router.include_router(admin_router)
+api_router.include_router(dashboard_router)
