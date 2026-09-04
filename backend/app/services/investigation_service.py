@@ -310,7 +310,7 @@ async def get_investigation_details(db: AsyncSession, incident_id: UUID) -> Opti
                 "score": score.score,
                 "proximity": score.proximity_score,
                 "temporality": score.temporality_score,
-                "trajectory_parity": score.trajectory_parity,
+                "trajectory_parity": score.trajectory_score,
                 "anomaly_score": score.anomaly_score,
                 "anomaly_flag": score.anomaly_flag
             }

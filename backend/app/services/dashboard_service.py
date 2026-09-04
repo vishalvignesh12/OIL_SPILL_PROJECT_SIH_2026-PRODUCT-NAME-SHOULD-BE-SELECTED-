@@ -43,10 +43,12 @@ def to_geojson_polygon(geom) -> Optional[dict]:
     """Convert SQLAlchemy geometry to GeoJSON polygon."""
     if geom is None:
         return None
+
     shape_obj = to_shape(geom)
+
     return {
         "type": "Polygon",
-        "coordinates": [list(mapping(shape_obj)["coordinates"])]
+        "coordinates": mapping(shape_obj)["coordinates"]
     }
 
 
